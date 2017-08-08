@@ -4,11 +4,23 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
+use Illuminate\Auth\UserInterface;
+use Illuminate\Auth\Reminders\RemindableInterface;
+use Zizaco\Entrust\HasRole;
 
-class User extends Authenticatable
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+
+
+class User extends Eloquent implements UserInterface, RemindableInterface
 {
     use Notifiable;
-
+    use EntrustUserTrait; // add this trait to your user model
     /**
      * The attributes that are mass assignable.
      *
