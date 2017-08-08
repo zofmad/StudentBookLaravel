@@ -17,10 +17,10 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 
-class User extends Eloquent implements UserInterface, RemindableInterface
+class User extends Eloquent implements UserInterface, RemindableInterface, AuthenticatableContract, CanResetPasswordContract
 {
     use Notifiable;
-    use EntrustUserTrait; // add this trait to your user model
+    use EntrustUserTrait, Authenticatable, CanResetPassword;
     /**
      * The attributes that are mass assignable.
      *
