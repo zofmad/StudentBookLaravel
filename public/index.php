@@ -20,7 +20,7 @@
 */
 
 require __DIR__.'/../bootstrap/autoload.php';
-
+use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | Turn On The Lights
@@ -34,8 +34,8 @@ require __DIR__.'/../bootstrap/autoload.php';
 */
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
-require_once("/opt/lampp/htdocs/workspace/StudentBook/app/models/User.php");
-$user = new \App\User();
+// require_once("/opt/lampp/htdocs/workspace/StudentBook/app/Models/User.php");
+$user = new User();
 var_dump($user);
 
 /*
