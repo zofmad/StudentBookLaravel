@@ -8,3 +8,5 @@ var_dump($user);
 
 $director = new Role();
 $director->name = 'director';
+$director->display_name = "Director";
+$director->description = "Director role-can "
