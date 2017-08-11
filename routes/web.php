@@ -19,3 +19,8 @@ Route::get('/', function () {
 Route::get('/about', function () {
     return view('welcome0');
 });
+
+
+Route::get('/db', function () {
+    return view('welcome0');
+});
