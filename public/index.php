@@ -37,21 +37,7 @@ use App\Models\Role;
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
 // require_once("/opt/lampp/htdocs/workspace/StudentBook/app/Models/Role.php");
-$user = new User();
-// var_dump($user);
 
-$permission = new Role();
-var_dump($permission);
-// $director->name = 'Director';
-// $director->display_name = "Director";
-// $director->description = "Director role-can see all grades, manage teachers and students accounts".
-// " (full CRUD with password change), can change his/her own password, add classes and assign students to them (full CRUD),".
-// " add subjects and assign them to teachers and classes(full CRUD), see statistics (ex. number of grades for teacher/subject/class)";
-
-
-//
-// $director->save();
-// var_dump($director);
 
 
 /*
@@ -75,3 +61,17 @@ $response = $kernel->handle(
 $response->send();
 
 $kernel->terminate($request, $response);
+
+
+$user = new User();
+// var_dump($user);
+
+$director = new Role();
+// var_dump($permission);
+
+
+$director->name = 'Director';
+$director->display_name = "Director";
+$director->description = "Director role";
+$director->save();
+// var_dump($director);
