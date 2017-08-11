@@ -24,3 +24,5 @@ Route::get('/about', function () {
 Route::get('/db', function () {
     return view('welcome0');
 });
+
+Route::get('test', 'TestController@index');
