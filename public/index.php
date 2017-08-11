@@ -20,8 +20,6 @@
 */
 
 require __DIR__.'/../bootstrap/autoload.php';
-use App\Models\User;
-use App\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,8 +34,6 @@ use App\Models\Role;
 */
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
-// require_once("/opt/lampp/htdocs/workspace/StudentBook/app/Models/Role.php");
-
 
 
 /*
@@ -61,17 +57,17 @@ $response = $kernel->handle(
 $response->send();
 
 $kernel->terminate($request, $response);
-
-
-$user = new User();
-// var_dump($user);
-
-$director = new Role();
-// var_dump($permission);
-
-
-$director->name = 'Director';
-$director->display_name = "Director";
-$director->description = "Director role";
-$director->save();
-// var_dump($director);
+// 
+//
+// $user = new User();
+// // var_dump($user);
+//
+// $director = new Role();
+// // var_dump($permission);
+//
+//
+// $director->name = 'Director';
+// $director->display_name = "Director";
+// $director->description = "Director role";
+// $director->save();
+// // var_dump($director);
