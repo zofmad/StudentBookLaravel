@@ -1,10 +1,9 @@
 <?php
 
-namespace App;
-
+namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
-class grades_history extends Model
+class GradesHistory extends Model
 {
     //
 }
