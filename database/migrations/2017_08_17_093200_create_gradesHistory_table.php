@@ -23,6 +23,7 @@ class CreateGradesHistoryTable extends Migration
             $table->foreign('teacher_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('no action');
 
+            $table->string('note')->nullable();
             $table->tinyInteger('value');
             $table->enum('action', ['insert grade', 'change grade', 'delete grade']);
             $table->dateTime('created_at');

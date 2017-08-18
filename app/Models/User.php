@@ -28,7 +28,7 @@ CanResetPasswordContract
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'foreign_id', 'foreign_class'
     ];
 
     /**
@@ -39,4 +39,32 @@ CanResetPasswordContract
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    // protected $guarded = array('id', 'password');
+
+
+    /**
+     * Get all of the owning usertable models.
+     */
+    public function usertable()
+    {
+        return $this->morphTo();
+    }
+
+    /**
+     * Get the grades changes in history for the teacher.
+     */
+    public function gradesChangesInHistory()
+    {
+        return $this->hasMany('App\Model\GradesHistory', 'teacher_id');
+    }
+
+    /**
+     * Get the grades for the student.
+     */
+    public function grades()
+    {
+        return $this->hasMany('App\Model\Grade', 'student_id');
+    }
+
 }

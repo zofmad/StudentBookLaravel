@@ -6,7 +6,14 @@ use Zizaco\Entrust\EntrustRole;
 class Role extends EntrustRole
 {
 
-  // public static function echoFunc(){
-  //   var_dump("alall");die();
-  // }
+
+  /**
+   * The attributes that are mass assignable.
+   *
+   * @var array
+   */
+  protected $fillable = [
+      'name', 'display_name', 'description', 'updated_at'
+  ];
+
 }
