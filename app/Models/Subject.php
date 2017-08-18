@@ -30,8 +30,8 @@ class Subject extends Model
    /**
     * The classes that belong to the subject.
     */
-   public function classes()
+   public function classrooms()
    {
-       return $this->belongsToMany('App\Models\Class');
+       return $this->belongsToMany('App\Models\Classroom');
    }
 }

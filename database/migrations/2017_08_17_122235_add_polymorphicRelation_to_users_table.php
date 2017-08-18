@@ -14,8 +14,8 @@ class AddPolymorphicRelationToUsersTable extends Migration
     public function up()
     {
       Schema::table('users', function (Blueprint $table) {
-        $table->integer('foreign_id')->unsigned()->nullable();
-        $table->string('foreign_class')->nullable();
+        $table->integer('usertable_id')->unsigned()->nullable();
+        $table->string('usertable_type')->nullable();
       });
     }
 

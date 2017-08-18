@@ -40,7 +40,13 @@ CanResetPasswordContract
         'password', 'remember_token',
     ];
 
-    // protected $guarded = array('id', 'password');
+    // protected $guarded = array('id');
+
+
+
+//By default, Laravel will use the fully qualified class name to store the type of the
+// related model. For instance, given the example above where a
+// Comment may belong to a Post or a Video, the default commentable_type would be either App\Post or App\Video.
 
 
     /**
@@ -66,5 +72,7 @@ CanResetPasswordContract
     {
         return $this->hasMany('App\Model\Grade', 'student_id');
     }
+
+
 
 }
