@@ -11,22 +11,32 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-
-Route::get('/about', function () {
-    return view('welcome0');
-});
-
-
-Route::get('/db', function () {
-    return view('welcome0');
-});
+//
+// Route::get('/about', function () {
+//     return view('welcome0');
+// });
+//
+//
+// Route::get('/db', function () {
+//     return view('welcome0');
+// });
 
 Route::get('test', 'TestController@index');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('/logout', 'Auth\LoginController@logout');
+
+Route::get('/editProfile', 'HomeController@index')->name('editProfile');
+
+
+Route::resource('subjects', 'SubjectController');
+Route::resource('user', 'UserController');
+Route::resource('classrooms', 'ClassroomController');
+Route::resource('grades', 'GradeController');
