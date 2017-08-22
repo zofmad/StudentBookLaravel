@@ -127,6 +127,7 @@ return [
             'url'  => 'user/create',
             'icon' => 'user',
             'icon_color' => 'green',
+            'can' => 'users-CRUD'
         ],
         // [
         //     'text' => 'Change Password',
@@ -175,36 +176,83 @@ return [
 
         'DISPLAY',
         [
-            'text'       => 'Directors',
+            'text'       => 'All directors',
             'url'  => 'admin/settings',
             'icon_color' => 'yellow',
+            'can' => 'see-history-of-changes-for-teacher',
         ],
+        // [
+        //     'text'       => 'All teachers',
+        //     'url'  => 'admin/settings',
+        //     'icon_color' => 'yellow',
+        //       'can' => 'users-CRUD',
+        // ],
+        // [
+        //     'text'       => 'All students',
+        //     'url'  => 'admin/settings',
+        //     'icon_color' => 'yellow',
+        //     'can' => 'users-CRUD'
+        //
+        //
+        // ],
+        //
+        // [
+        //     'text'       => 'All grades',
+        //     'url'  => 'admin/settings',
+        //     'icon_color' => 'yellow',
+        //     'can' => 'users-CRUD',
+        // ],
+        // [
+        //     'text'       => 'All classes',
+        //     'url'  => 'admin/settings',
+        //     'icon_color' => 'yellow',
+        //     'can' => 'classes-CRUD',
+        // ],
+        // [
+        //     'text'       => 'All subjects',
+        //     'url'  => 'admin/settings',
+        //     'icon_color' => 'yellow',
+        //     'can' => 'subjects-CRUD',
+        // ],
+        // [
+        //     'text'       => 'Your subjects',
+        //     'url'  => 'admin/settings',
+        //     'icon_color' => 'yellow',
+        //     'can' => 'see-subjects-for-teacher',
+        // ],
+        // [
+        //     'text'       => 'Your grades',
+        //     'url'  => 'admin/settings',
+        //     'icon_color' => 'yellow',
+        //     'can' => 'see-grades-for-teacher',
+        // ],
         [
-            'text'       => 'Teachers',
+            'text'       => 'History of grades changes',
             'url'  => 'admin/settings',
             'icon_color' => 'yellow',
+            'can' => 'see-history-of-changes-for-teacher',
         ],
+        // [
+        //     'text'       => 'Generate list of Your students with grades',
+        //     'url'  => 'admin/settings',
+        //     'icon_color' => 'yellow',
+        //
+        // ],
+        // [
+        //     'text'       => 'Your grades',
+        //     'url'  => 'admin/settings',
+        //     'icon_color' => 'yellow',
+        //     'can' => 'see-grades-for-student',
+        // ],
         [
-            'text'       => 'Students',
+            'text'       => 'E-mail notifications',
             'url'  => 'admin/settings',
             'icon_color' => 'yellow',
+            'can' => 'send-notification-email-to-student',
         ],
 
-        [
-            'text'       => 'Grades',
-            'url'  => 'admin/settings',
-            'icon_color' => 'yellow',
-        ],
-        [
-            'text'       => 'Classes',
-            'url'  => 'admin/settings',
-            'icon_color' => 'yellow',
-        ],
-        [
-            'text'       => 'Subjects',
-            'url'  => 'admin/settings',
-            'icon_color' => 'yellow',
-        ],
+
+
     ],
 
     /*
@@ -224,7 +272,8 @@ return [
         JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
-        JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
+        // JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
+        App\MyClasses\MyMenuFilter::class,
     ],
 
     /*

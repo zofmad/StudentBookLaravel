@@ -1,30 +1,58 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\Role;
+
+
 
 class TestController extends Controller
 {
     public function index()
     {
-        $user = new \App\Models\User();
-         var_dump($user);
+        // $user = new \App\Models\User();
+        //  var_dump($user);
 
-        $permission = new \App\Models\Permission();
-        var_dump($permission);
-        $role = new \App\Models\Role();
-         var_dump($role);
+       //
+         DB::table('users')->insert([
+             'name' => "teacher",
+             'email' => "teacher@gmail.com",
+             'password' => \Hash::make('tsecret'),
+         ]);
+         $teacher = User::where('name', '=', 'teacher')->first();
+         $role = Role::where('name', '=', 'Teacher')->first();
+        $teacher->attachRole($role);
+        $teacher->save();
+        DB::table('users')->insert([
+            'name' => "student",
+            'email' => "student@gmail.com",
+            'password' => \Hash::make('ssecret'),
+        ]);
+        $teacher = User::where('name', '=', 'student')->first();
+        $role = Role::where('name', '=', 'Student')->first();
+       $teacher->attachRole($role);
+       $teacher->save();
 
-        $permission = new \App\Models\Subject();
-        var_dump($permission);
-        $permission = new \App\Models\Classroom();
-        var_dump($permission);
 
-
-                                $permission = new \App\Models\Grade();
-                                var_dump($permission);
-
-                                        $permission = new \App\Models\GradesHistory();
-                                        var_dump($permission);
+       //
+      //   $permission = new \App\Models\Permission();
+      //   var_dump($permission);
+      //   $role = new \App\Models\Role();
+      //    var_dump($role);
+       //
+      //   $permission = new \App\Models\Subject();
+      //   var_dump($permission);
+      //   $permission = new \App\Models\Classroom();
+      //   var_dump($permission);
+       //
+       //
+      //                           $permission = new \App\Models\Grade();
+      //                           var_dump($permission);
+       //
+      //                                   $permission = new \App\Models\GradesHistory();
+      //                                   var_dump($permission);
 
 //         $director->name = 'Director';
 //         $director->display_name = "Director";
@@ -36,5 +64,8 @@ class TestController extends Controller
         //
         // $director->save();
         // var_dump($director);
+  //
+  // var_dump(\Auth::user()->can('users-CRUD'));
+
     }
 }

@@ -13,16 +13,22 @@ class PermissionsTableSeeder extends Seeder
     public function run()
     {
       DB::table('permissions')->insert([
-        ['name' => "See all grades"],
-        ['name' => "Change his/her own password"],
-        ['name' => "See statistics"],
-        ['name' => "Users CRUD"],
-        ['name' => "Classes CRUD"],
-        ['name' => "Subjects CRUD"],
-        ['name' => "Insert/update grade for subject"],
-        ['name' => "Generate CSV file"],
-        ['name' => "See grades for student"],
-        ['name' => "See grades for teacher"]
+        ['name' => "see-all-grades"],
+        ['name' => "change-his/her-own-password"],
+        ['name' => "see-statistics"],
+        ['name' => "users-CRUD"],
+        ['name' => 'classes-CRUD'],
+        ['name' => "subjects-CRUD"],
+        ['name' => "insert/update-grade-for-subject"],
+        ['name' => "generate-CSV-file-with-grades"],
+        ['name' => "see-grades-for-student"],
+        ['name' => "see-grades-for-teacher"],
+        ['name' => "see-subjects-for-teacher"],
+        ['name' => "see-history-of-changes-for-teacher"],
+        ['name' => "send-notification-email-to-student"],
+
+
+
 
       ]);
     }

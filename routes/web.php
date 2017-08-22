@@ -25,7 +25,7 @@
 //     return view('welcome0');
 // });
 
-Route::get('test', 'TestController@index');
+Route::get('/test', 'TestController@index');
 
 Auth::routes();
 
