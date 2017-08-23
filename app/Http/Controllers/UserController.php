@@ -19,12 +19,12 @@ class UserController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
+     * @param  string $role
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(string $role)
     {
-        return view('user.create');
+        return view('user.create', ['role' => $role]);
     }
 
     /**
