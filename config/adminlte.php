@@ -128,55 +128,12 @@ return [
             'icon' => 'user',
             'icon_color' => 'green',
         ],
-        // [
-        //     'text' => 'Change Password',
-        //     'url'  => 'changePassword',
-        //     'icon' => 'lock',
-        //     'icon_color' => 'green',
-        // ],
-        // ],
-        // [
-        //     'text'    => 'Multilevel',
-        //     'icon'    => 'share',
-        //     'submenu' => [
-        //         [
-        //             'text' => 'Level One',
-        //             'url'  => '#',
-        //         ],
-        //         [
-        //             'text'    => 'Level One',
-        //             'url'     => '#',
-        //             'submenu' => [
-        //                 [
-        //                     'text' => 'Level Two',
-        //                     'url'  => '#',
-        //                 ],
-        //                 [
-        //                     'text'    => 'Level Two',
-        //                     'url'     => '#',
-        //                     'submenu' => [
-        //                         [
-        //                             'text' => 'Level Three',
-        //                             'url'  => '#',
-        //                         ],
-        //                         [
-        //                             'text' => 'Level Three',
-        //                             'url'  => '#',
-        //                         ],
-        //                     ],
-        //                 ],
-        //             ],
-        //         ],
-        //         [
-        //             'text' => 'Level One',
-        //             'url'  => '#',
-        //         ],
-        //     ],
+
 
         'DISPLAY',
         [
             'text'       => 'All directors',
-            'url'  => 'admin/settings',
+            'url'  => 'user/create/Director',
             'icon_color' => 'yellow',
             'can' => 'users-CRUD',
         ],
@@ -191,7 +148,6 @@ return [
             'url'  => 'admin/settings',
             'icon_color' => 'yellow',
             'can' => 'users-CRUD'
-
 
         ],
 
