@@ -16,24 +16,24 @@ class TestController extends Controller
         //  var_dump($user);
 
        //
-         DB::table('users')->insert([
-             'name' => "teacher",
-             'email' => "teacher@gmail.com",
-             'password' => \Hash::make('tsecret'),
-         ]);
-         $teacher = User::where('name', '=', 'teacher')->first();
-         $role = Role::where('name', '=', 'Teacher')->first();
-        $teacher->attachRole($role);
-        $teacher->save();
-        DB::table('users')->insert([
-            'name' => "student",
-            'email' => "student@gmail.com",
-            'password' => \Hash::make('ssecret'),
-        ]);
-        $teacher = User::where('name', '=', 'student')->first();
-        $role = Role::where('name', '=', 'Student')->first();
-       $teacher->attachRole($role);
-       $teacher->save();
+      //    DB::table('users')->insert([
+      //        'name' => "teacher",
+      //        'email' => "teacher@gmail.com",
+      //        'password' => \Hash::make('tsecret'),
+      //    ]);
+      //    $teacher = User::where('name', '=', 'teacher')->first();
+      //    $role = Role::where('name', '=', 'Teacher')->first();
+      //   $teacher->attachRole($role);
+      //   $teacher->save();
+      //   DB::table('users')->insert([
+      //       'name' => "student",
+      //       'email' => "student@gmail.com",
+      //       'password' => \Hash::make('ssecret'),
+      //   ]);
+      //   $teacher = User::where('name', '=', 'student')->first();
+      //   $role = Role::where('name', '=', 'Student')->first();
+      //  $teacher->attachRole($role);
+      //  $teacher->save();
 
 
        //
@@ -65,7 +65,7 @@ class TestController extends Controller
         // $director->save();
         // var_dump($director);
   //
-  // var_dump(\Auth::user()->can('users-CRUD'));
+  var_dump(\Auth::user());
 
     }
 }

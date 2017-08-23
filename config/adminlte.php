@@ -127,7 +127,6 @@ return [
             'url'  => 'user/create',
             'icon' => 'user',
             'icon_color' => 'green',
-            'can' => 'users-CRUD'
         ],
         // [
         //     'text' => 'Change Password',
@@ -179,76 +178,78 @@ return [
             'text'       => 'All directors',
             'url'  => 'admin/settings',
             'icon_color' => 'yellow',
-            'can' => 'see-history-of-changes-for-teacher',
+            'can' => 'users-CRUD',
         ],
-        // [
-        //     'text'       => 'All teachers',
-        //     'url'  => 'admin/settings',
-        //     'icon_color' => 'yellow',
-        //       'can' => 'users-CRUD',
-        // ],
-        // [
-        //     'text'       => 'All students',
-        //     'url'  => 'admin/settings',
-        //     'icon_color' => 'yellow',
-        //     'can' => 'users-CRUD'
-        //
-        //
-        // ],
-        //
-        // [
-        //     'text'       => 'All grades',
-        //     'url'  => 'admin/settings',
-        //     'icon_color' => 'yellow',
-        //     'can' => 'users-CRUD',
-        // ],
-        // [
-        //     'text'       => 'All classes',
-        //     'url'  => 'admin/settings',
-        //     'icon_color' => 'yellow',
-        //     'can' => 'classes-CRUD',
-        // ],
-        // [
-        //     'text'       => 'All subjects',
-        //     'url'  => 'admin/settings',
-        //     'icon_color' => 'yellow',
-        //     'can' => 'subjects-CRUD',
-        // ],
-        // [
-        //     'text'       => 'Your subjects',
-        //     'url'  => 'admin/settings',
-        //     'icon_color' => 'yellow',
-        //     'can' => 'see-subjects-for-teacher',
-        // ],
-        // [
-        //     'text'       => 'Your grades',
-        //     'url'  => 'admin/settings',
-        //     'icon_color' => 'yellow',
-        //     'can' => 'see-grades-for-teacher',
-        // ],
+        [
+            'text'       => 'All teachers',
+            'url'  => 'admin/settings',
+            'icon_color' => 'yellow',
+              'can' => 'users-CRUD',
+        ],
+        [
+            'text'       => 'All students',
+            'url'  => 'admin/settings',
+            'icon_color' => 'yellow',
+            'can' => 'users-CRUD'
+
+
+        ],
+
+        [
+            'text'       => 'All grades',
+            'url'  => 'admin/settings',
+            'icon_color' => 'yellow',
+            'can' => 'see-all-grades',
+        ],
+        [
+            'text'       => 'All classes',
+            'url'  => 'admin/settings',
+            'icon_color' => 'yellow',
+            'can' => 'classes-CRUD',
+        ],
+        [
+            'text'       => 'All subjects',
+            'url'  => 'admin/settings',
+            'icon_color' => 'yellow',
+            'can' => 'subjects-CRUD',
+        ],
+        [
+            'text'       => 'Your subjects',
+            'url'  => 'admin/settings',
+            'icon_color' => 'yellow',
+            'can' => 'see-subjects-for-teacher',
+        ],
+        [
+            'text'       => 'Your grades',
+            'url'  => 'admin/settings',
+            'icon_color' => 'yellow',
+            'can' => 'see-grades-for-teacher',
+        ],
         [
             'text'       => 'History of grades changes',
             'url'  => 'admin/settings',
             'icon_color' => 'yellow',
             'can' => 'see-history-of-changes-for-teacher',
         ],
-        // [
-        //     'text'       => 'Generate list of Your students with grades',
-        //     'url'  => 'admin/settings',
-        //     'icon_color' => 'yellow',
-        //
-        // ],
-        // [
-        //     'text'       => 'Your grades',
-        //     'url'  => 'admin/settings',
-        //     'icon_color' => 'yellow',
-        //     'can' => 'see-grades-for-student',
-        // ],
+        [
+            'text'       => 'Generate file with list of Your students with grades',
+            'url'  => 'admin/settings',
+            'icon_color' => 'yellow',
+            'can' => 'generate-CSV-file-with-grade',
+
+        ],
+        [
+            'text'       => 'Your grades',
+            'url'  => 'admin/settings',
+            'icon_color' => 'yellow',
+            'can' => 'see-grades-for-student',
+        ],
         [
             'text'       => 'E-mail notifications',
             'url'  => 'admin/settings',
             'icon_color' => 'yellow',
             'can' => 'send-notification-email-to-student',
+
         ],
 
 
