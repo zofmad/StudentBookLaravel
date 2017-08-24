@@ -3,18 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+
+use App\Models\Role;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * @param  string $role
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(string $role)
     {
-        //
+      $users = User::all();
+
+      return view('user.list', ['role' => $role])->withUsers($users);
     }
 
     /**
@@ -35,9 +39,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-      dd($request->all());
+      $this->validate($request, [
+        'name' => 'required',
+        'email' => 'required|unique:users',
+        'password' => 'required',
+        'role' => 'required'
+      ]);
+      $newUser = $request->all();
+      // dd($newUser);
+      User::create($newUser);
+      $user = User::where('email', '=', $newUser['email'])->first();
+      $role = Role::where('name', '=', $newUser['role'])->first();
+      $user->attachRole($role);
+      $user->save();
+      \Session::flash('flash_message', $newUser['role']." ".$newUser['name']." successfully added!");
+      return redirect()->back();
     }
-
     /**
      * Display the specified resource.
      *

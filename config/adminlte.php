@@ -124,7 +124,7 @@ return [
         'ACCOUNT SETTINGS',
         [
             'text' => 'Profile',
-            'url'  => 'user/create',
+            'url'  => 'user/create/Director',
             'icon' => 'user',
             'icon_color' => 'green',
         ],
@@ -133,19 +133,19 @@ return [
         'DISPLAY',
         [
             'text'       => 'All directors',
-            'url'  => 'user/create/Director',
+            'url'  => 'user/list/Director',
             'icon_color' => 'yellow',
             'can' => 'users-CRUD',
         ],
         [
             'text'       => 'All teachers',
-            'url'  => 'admin/settings',
+            'url'  => 'user/create/Teacher',
             'icon_color' => 'yellow',
               'can' => 'users-CRUD',
         ],
         [
             'text'       => 'All students',
-            'url'  => 'admin/settings',
+            'url'  => 'user/create/Student',
             'icon_color' => 'yellow',
             'can' => 'users-CRUD'
 
