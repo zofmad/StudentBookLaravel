@@ -1,4 +1,4 @@
-@extends('layouts.app')
+
 
 
 
@@ -17,6 +17,8 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
+              @include('partials.alerts.errors')
+
 
               @if(Session::has('flash_message'))
               <div class="alert alert-success">
@@ -28,13 +30,7 @@
 
                 <div class="panel-body">
 
-                  @if($errors->any())
-                  <div class="alert alert-danger">
-                      @foreach($errors->all() as $error)
-                          <p>{{ $error }}</p>
-                      @endforeach
-                  </div>
-                  @endif
+
 
                   {!! Form::open([
                       'route' => 'user.store'

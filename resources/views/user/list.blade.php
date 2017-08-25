@@ -1,5 +1,3 @@
-@extends('layouts.app')
-
 
 
 
@@ -26,8 +24,8 @@
                     <h3>{{ $user->name }}</h3>
                     <p>{{ $user->email}}</p>
                     <p>
-                        <a href="{{ route('user.show', $user->id) }}" class="btn btn-info">View {{$role}}</a>
-                        <a href="{{ route('user.edit', $user->id) }}" class="btn btn-primary">Edit {{$role}}</a>
+                        <a href="{{ route('user.show.role', ['role' => $role, 'user' => $user]) }}" class="btn btn-info">View {{$role}}</a>
+                        <a href="{{ route('user.edit.role', ['role' => $role, 'user' => $user]) }}" class="btn btn-primary">Edit {{$role}}</a>
                     </p>
                     <hr>
                   @endforeach
@@ -38,6 +36,9 @@
 
 
                 </div>
+                <a href="{{ route('user.create.role', $role) }}" class="btn btn-primary">Add new {{$role}}</a>
+
+
             </div>
         </div>
     </div>

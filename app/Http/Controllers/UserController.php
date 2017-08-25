@@ -57,36 +57,55 @@ class UserController extends Controller
     }
     /**
      * Display the specified resource.
-     *
+     * @param  string $role
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(string $role, User $user)
     {
-        //
+      $userId = $user->id;
+      $user = User::findOrFail($userId);
+      return view('user.show', ['user' => $user])->withRole($role);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
+     * @param  string $role
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(string $role, User $user)
     {
-        //
+      $userId = $user->id;
+      $user = User::findOrFail($userId);
+      return view('user.edit', ['user' => $user])->withRole($role);
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(User $user, Request $request)
     {
-        //
+
+      $userId = $user->id;
+      $user = User::findOrFail($userId);
+
+      $this->validate($request, [
+        'name' => 'required',
+        'email' => 'required|unique:users'
+      ]);
+
+      $updateUser = $request->all();
+
+      $user->fill($updateUser)->save();
+
+      \Session::flash('flash_message', "User successfully added!");
+
+      return redirect()->back();
     }
 
     /**
