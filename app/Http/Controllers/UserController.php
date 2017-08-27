@@ -102,8 +102,21 @@ class UserController extends Controller
       $updateUser = $request->all();
 
       $user->fill($updateUser)->save();
+//sprawdzenie roli
+      if($user->hasRole("Director")){
+          $role = "Director";
 
-      \Session::flash('flash_message', "User successfully added!");
+      }
+      if($user->hasRole("Teacher")){
+          $role = "Teacher";
+
+      }
+      if($user->hasRole("Student")){
+          $role = "Student";
+
+      }
+      
+      \Session::flash('flash_message', "$role successfully updated!");
 
       return redirect()->back();
     }
