@@ -20,12 +20,8 @@
               @include('partials.alerts.errors')
 
 
-              @if(Session::has('flash_message'))
-              <div class="alert alert-success">
-                  {{ Session::get('flash_message') }}
-              </div>
-              @endif
-
+              
+              
                 <div class="panel-heading lead">Enter the personal details of a new {{$role}} below.</div>
 
                 <div class="panel-body">

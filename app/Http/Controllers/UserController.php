@@ -17,8 +17,10 @@ class UserController extends Controller
     public function index(string $role)
     {
       $users = User::all();
-
-      return view('user.list', ['role' => $role])->withUsers($users);
+      //if hasrole($role)
+      
+//$userswithrole
+      return view('user.list', ['role' => $role])->withUsers($users);//users->dir/..
     }
 
     /**
@@ -105,15 +107,12 @@ class UserController extends Controller
 //sprawdzenie roli
       if($user->hasRole("Director")){
           $role = "Director";
-
       }
       if($user->hasRole("Teacher")){
           $role = "Teacher";
-
       }
       if($user->hasRole("Student")){
           $role = "Student";
-
       }
       
       \Session::flash('flash_message', "$role successfully updated!");
@@ -129,6 +128,23 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        
+        $userId = $user->id;
+        $user = User::findOrFail($userId);
+        if($user->hasRole("Director")){
+            $role = "Director";
+        }
+        if($user->hasRole("Teacher")){
+            $role = "Teacher";
+        }
+        if($user->hasRole("Student")){
+            $role = "Student";
+        }
+        $user->delete();
+
+
+        \Session::flash('flash_message', "$role successfully deleted!");
+
+        return redirect()->route('user.list.role', $role);
     }
 }

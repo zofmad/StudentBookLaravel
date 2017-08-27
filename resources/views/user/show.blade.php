@@ -29,9 +29,13 @@
                   <a href="{{ route('user.list.role', $role) }}" class="btn btn-info">Back to all {{$role}}s</a>
                   <a href="{{ route('user.edit.role', ['role' => $role, 'user' => $user]) }}" class="btn btn-primary">Edit {{$role}}</a>
                   <div class="pull-right">
-                    <a href="#" class="btn btn-danger">Delete this task</a>
+                    {!! Form::open([
+                        'method' => 'DELETE',
+                        'route' => ['user.destroy', $user]
+                    ]) !!}
+                        {!! Form::submit("Delete this $role?", ['class' => 'btn btn-danger']) !!}
+                    {!! Form::close() !!}
                   </div>
-
                 </div>
             </div>
         </div>
