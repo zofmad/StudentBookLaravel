@@ -22,11 +22,7 @@
                 <div class="panel-heading lead">Edit {{$user->name}}</div>
 
                     @include('partials.alerts.errors')
-<!--                @if(Session::has('flash_message'))
-                    <div class="alert alert-success">
-                        {{ Session::get('flash_message') }}
-                    </div>
-                @endif-->
+
 
 
                 <div class="panel-body">
