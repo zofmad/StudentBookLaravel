@@ -2,7 +2,6 @@
 
 
 
-
 @extends('adminlte::page')
 
 @section('title', 'StudentBook')

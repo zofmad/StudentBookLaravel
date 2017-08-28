@@ -104,9 +104,9 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             @if(config('adminlte.layout') == 'top-nav')
-          
 
-          
+
+
             <main>
               <div class="container">
                     @endif
@@ -119,12 +119,17 @@
                         {{ Session::get('flash_message') }}
                     </div>
                 @endif
+                @if(Session::has('warning_message'))
+                    <div class="alert alert-warning">
+                        {{ Session::get('warning_message') }}
+                    </div>
+                @endif
                   <!-- Main content -->
                 <section class="content">
                 @yield('content')
               </div>
             </main>
-            
+
 
             </section>
             <!-- /.content -->

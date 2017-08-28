@@ -16,11 +16,17 @@ class UserController extends Controller
      */
     public function index(string $role)
     {
+
+
       $users = User::all();
-      //if hasrole($role)
-      
-//$userswithrole
-      return view('user.list', ['role' => $role])->withUsers($users);//users->dir/..
+
+      $usersWithRole = [];
+      for($i=0; $i<count($users); $i++){
+        if($users[$i]->hasRole($role)){
+          $usersWithRole[] = $users[$i];
+        }
+      }
+      return view('user.list', ['role' => $role])->withUsers($usersWithRole);
     }
 
     /**
@@ -48,14 +54,14 @@ class UserController extends Controller
         'role' => 'required'
       ]);
       $newUser = $request->all();
-      // dd($newUser);
-      User::create($newUser);
-      $user = User::where('email', '=', $newUser['email'])->first();
+
+      $user = User::create($newUser);
       $role = Role::where('name', '=', $newUser['role'])->first();
       $user->attachRole($role);
       $user->save();
-      \Session::flash('flash_message', $newUser['role']." ".$newUser['name']." successfully added!");
-      return redirect()->back();
+      // \Session::flash('flash_message', $newUser['role']." ".$newUser['name']." successfully added!");
+      return redirect()->back()
+      ->with('flash_message', $newUser['role']." ".$newUser['name']." successfully added!");
     }
     /**
      * Display the specified resource.
@@ -96,28 +102,31 @@ class UserController extends Controller
       $userId = $user->id;
       $user = User::findOrFail($userId);
 
-      $this->validate($request, [
-        'name' => 'required',
-        'email' => 'required|unique:users'
-      ]);
+
+      if($request['email'] == $user->email && !($request['name'] == $user->name)){
+        $this->validate($request, [
+          'name' => 'required',
+          'email' => 'required'
+        ]);
+      } elseif($request['email'] == $user->email && $request['name'] == $user->name) {
+
+        return redirect()->back()->with('warning_message', "You didn't change any data.");
+
+      } else {
+        $this->validate($request, [
+          'name' => 'required',
+          'email' => 'required|unique:users'
+        ]);
+      }
 
       $updateUser = $request->all();
+      $role = $user->roles->first()->name;
 
       $user->fill($updateUser)->save();
-//sprawdzenie roli
-      if($user->hasRole("Director")){
-          $role = "Director";
-      }
-      if($user->hasRole("Teacher")){
-          $role = "Teacher";
-      }
-      if($user->hasRole("Student")){
-          $role = "Student";
-      }
-      
-      \Session::flash('flash_message', "$role successfully updated!");
 
-      return redirect()->back();
+
+
+      return redirect()->back()->with('flash_message', "$role successfully updated!");
     }
 
     /**
@@ -128,23 +137,13 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        
+
         $userId = $user->id;
         $user = User::findOrFail($userId);
-        if($user->hasRole("Director")){
-            $role = "Director";
-        }
-        if($user->hasRole("Teacher")){
-            $role = "Teacher";
-        }
-        if($user->hasRole("Student")){
-            $role = "Student";
-        }
+        $role = $user->roles->first()->name;
         $user->delete();
 
-
-        \Session::flash('flash_message', "$role successfully deleted!");
-
-        return redirect()->route('user.list.role', $role);
+        return redirect()->route('user.list.role', $role)
+          ->with('flash_message', "$role successfully deleted!");
     }
 }
