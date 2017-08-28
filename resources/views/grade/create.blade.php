@@ -8,7 +8,7 @@
 @section('title', 'StudentBook')
 
 @section('content_header')
-    <h1>Add a New {{$role}}</h1>
+    <h1>Add a New Class</h1>
 @stop
 
 

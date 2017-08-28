@@ -159,7 +159,7 @@ return [
         ],
         [
             'text'       => 'All classes',
-            'url'  => 'admin/settings',
+            'url'  => 'classrooms',
             'icon_color' => 'yellow',
             'can' => 'classes-CRUD',
         ],

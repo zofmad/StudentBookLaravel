@@ -6,6 +6,7 @@ use App\Models\User;
 
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -102,25 +103,23 @@ class UserController extends Controller
       $userId = $user->id;
       $user = User::findOrFail($userId);
 
+      // var_dump($request);
+      // die();
+      $this->validate($request, [
+        'name' => 'required',
+        'email' => ['required',
+          Rule::unique('users')->ignore($user->id),
+        ]
+      ]);
 
-      if($request['email'] == $user->email && !($request['name'] == $user->name)){
-        $this->validate($request, [
-          'name' => 'required',
-          'email' => 'required'
-        ]);
-      } elseif($request['email'] == $user->email && $request['name'] == $user->name) {
+      if($request->input('email') == $user->email && $request->input('name') == $user->name) {
 
         return redirect()->back()->with('warning_message', "You didn't change any data.");
-
-      } else {
-        $this->validate($request, [
-          'name' => 'required',
-          'email' => 'required|unique:users'
-        ]);
       }
 
       $updateUser = $request->all();
-      $role = $user->roles->first()->name;
+      // $role = $user->roles->first()->name;
+      $role = $request->input('role');
 
       $user->fill($updateUser)->save();
 
@@ -143,7 +142,7 @@ class UserController extends Controller
         $role = $user->roles->first()->name;
         $user->delete();
 
-        return redirect()->route('user.list.role', $role)
+        return redirect()->route('home')
           ->with('flash_message', "$role successfully deleted!");
     }
 }

@@ -14,7 +14,11 @@ class ClassroomController extends Controller
      */
     public function index()
     {
-        //
+      $classrooms = Classroom::all();
+
+
+      return view('classroom.list')->withClassrooms($classrooms);
+
     }
 
     /**
@@ -24,7 +28,7 @@ class ClassroomController extends Controller
      */
     public function create()
     {
-        //
+      return view('classroom.create');
     }
 
     /**
@@ -35,7 +39,14 @@ class ClassroomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $this->validate($request, [
+        'name' => 'required|unique:classrooms',
+      ]);
+      $newClassroom = $request->all();
+
+      $classroom = Classroom::create($newClassroom);
+      return redirect()->back()
+      ->with('flash_message', 'New class '.$classroom['name'].' successfully added!');
     }
 
     /**
@@ -46,7 +57,9 @@ class ClassroomController extends Controller
      */
     public function show(Classroom $classroom)
     {
-        //
+      $classroomId = $classroom->id;
+      $classroom = Classroom::findOrFail($classroomId);
+      return view('classroom.show', ['classroom' => $classroom]);
     }
 
     /**

@@ -2,12 +2,13 @@
 
 
 
+
 @extends('adminlte::page')
 
 @section('title', 'StudentBook')
 
 @section('content_header')
-    <h1>Edit {{$role}}</h1>
+    <h1>Add a New class</h1>
 @stop
 
 
@@ -16,38 +17,31 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
+              @include('partials.alerts.errors')
 
 
-                <div class="panel-heading lead">Edit {{$user->name}}</div>
-
-                    @include('partials.alerts.errors')
 
 
+                <div class="panel-heading lead">Enter the details of a new class below.</div>
 
                 <div class="panel-body">
-                  {!! Form::model($user, [
-                      'method' => 'PATCH',
-                      'route' => ['user.update', $user]
+
+
+
+                  {!! Form::open([
+                      'route' => 'classrooms.store'
                   ]) !!}
+
                   <div class="form-group">
                       {!! Form::label('name', 'Name:', ['class' => 'control-label']) !!}
                       {!! Form::text('name', null, ['class' => 'form-control']) !!}
                   </div>
 
-                  <div class="form-group">
-                      {!! Form::label('email', 'Email:', ['class' => 'control-label']) !!}
-                      {!! Form::email('email', null, ['class' => 'form-control']) !!}
-                      {!! Form::hidden('role', $role) !!}
-                  </div>
-
-                  {!! Form::submit('Update Task', ['class' => 'btn btn-primary']) !!}
+                  {!! Form::submit("Create class", ['class' => 'btn btn-primary']) !!}
 
                   {!! Form::close() !!}
 
 
-
-                  <hr>
-                  <a href="{{ route('user.list.role', $role) }}" class="btn btn-info">Back to all {{$role}}s</a>
 
 
                 </div>
