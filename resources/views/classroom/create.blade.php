@@ -38,6 +38,7 @@
                   </div>
 
                   {!! Form::submit("Create class", ['class' => 'btn btn-primary']) !!}
+                  <a href="{{ route('classrooms.index') }}" class="btn btn-info">Back to all classes</a>
 
                   {!! Form::close() !!}
 

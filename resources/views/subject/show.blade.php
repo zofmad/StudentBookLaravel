@@ -8,7 +8,7 @@
 @section('title', 'StudentBook')
 
 @section('content_header')
-    <h1>{{$role}} profile</h1>
+    <h1>Class profile</h1>
 @stop
 
 
@@ -18,23 +18,20 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
 
-
-
-                <div class="panel-heading lead">{{$user->name}}</div>
+                <div class="panel-heading lead">{{$classroom->name}}</div>
 
                 <div class="panel-body">
-                  <p class="lead"> Name: {{$user->name}} </p>
-                  <p class="lead"> Email: {{$user->email}} </p>
+                  <p class="lead"> Name: {{$classroom->name}} </p>
+
                   <hr>
-                  <a href="{{ route('user.list.role', $role) }}" class="btn btn-info">Back to all {{$role}}s</a>
-                  <a href="{{ route('user.edit.role', ['role' => $role, 'user' => $user]) }}" class="btn btn-primary">Edit {{$role}}</a>
+                  <a href="{{ route('classrooms.index') }}" class="btn btn-info">Back to all classes</a>
+                  <a href="{{ route('classrooms.edit', $classroom) }}" class="btn btn-primary">Edit class</a>
                   <div class="pull-right">
                     {!! Form::open([
                         'method' => 'DELETE',
-                        'route' => ['user.destroy', $user]
+                        'route' => ['classrooms.destroy', $classroom]
                     ]) !!}
-                        {!! Form::hidden('role', $role) !!}
-                        {!! Form::submit("Delete this $role?", ['class' => 'btn btn-danger']) !!}
+                        {!! Form::submit("Delete this class?", ['class' => 'btn btn-danger']) !!}
                     {!! Form::close() !!}
                   </div>
                 </div>

@@ -34,8 +34,8 @@ class TestController extends Controller
       //   $role = Role::where('name', '=', 'Student')->first();
       //  $teacher->attachRole($role);
       //  $teacher->save();
-
-
+       //
+       //
        //
       //   $permission = new \App\Models\Permission();
       //   var_dump($permission);
@@ -64,8 +64,8 @@ class TestController extends Controller
         //
         // $director->save();
         // var_dump($director);
-  //
-  var_dump(\Auth::user());
+
+
 
     }
 }

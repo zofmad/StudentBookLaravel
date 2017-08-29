@@ -165,7 +165,7 @@ return [
         ],
         [
             'text'       => 'All subjects',
-            'url'  => 'admin/settings',
+            'url'  => 'subjects',
             'icon_color' => 'yellow',
             'can' => 'subjects-CRUD',
         ],

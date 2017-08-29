@@ -7,7 +7,7 @@
 @section('title', 'StudentBook')
 
 @section('content_header')
-    <h1>Edit {{$role}}</h1>
+    <h1>Edit class</h1>
 @stop
 
 
@@ -18,36 +18,32 @@
             <div class="panel panel-default">
 
 
-                <div class="panel-heading lead">Edit {{$user->name}}</div>
+                <div class="panel-heading lead">Edit class {{$classroom->name}}</div>
 
                     @include('partials.alerts.errors')
 
 
 
                 <div class="panel-body">
-                  {!! Form::model($user, [
+                  {!! Form::model($classroom, [
                       'method' => 'PATCH',
-                      'route' => ['user.update', $user]
+                      'route' => ['classrooms.update', $classroom]
                   ]) !!}
                   <div class="form-group">
                       {!! Form::label('name', 'Name:', ['class' => 'control-label']) !!}
                       {!! Form::text('name', null, ['class' => 'form-control']) !!}
                   </div>
 
-                  <div class="form-group">
-                      {!! Form::label('email', 'Email:', ['class' => 'control-label']) !!}
-                      {!! Form::email('email', null, ['class' => 'form-control']) !!}
-                      {!! Form::hidden('role', $role) !!}
-                  </div>
 
-                  {!! Form::submit('Update Task', ['class' => 'btn btn-primary']) !!}
+
+                  {!! Form::submit('Update Class', ['class' => 'btn btn-primary']) !!}
 
                   {!! Form::close() !!}
 
 
 
                   <hr>
-                  <a href="{{ route('user.list.role', $role) }}" class="btn btn-info">Back to all {{$role}}s</a>
+                  <a href="{{ route('classrooms.index') }}" class="btn btn-info">Back to all classes</a>
 
 
                 </div>

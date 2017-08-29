@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Classroom;
 use Illuminate\Http\Request;
-
+use Illuminate\Validation\Rule;
 class ClassroomController extends Controller
 {
     /**
@@ -39,6 +39,7 @@ class ClassroomController extends Controller
      */
     public function store(Request $request)
     {
+
       $this->validate($request, [
         'name' => 'required|unique:classrooms',
       ]);
@@ -70,7 +71,9 @@ class ClassroomController extends Controller
      */
     public function edit(Classroom $classroom)
     {
-        //
+        $classroomId = $classroom->id;
+        $classroom = Classroom::findorFail($classroomId);
+        return view('classroom.edit')->withClassroom($classroom);
     }
 
     /**
@@ -82,7 +85,23 @@ class ClassroomController extends Controller
      */
     public function update(Request $request, Classroom $classroom)
     {
-        //
+        $classroomId = $classroom->id;
+        $classroom = Classroom::findOrFail($classroomId);
+        $this->validate($request, [
+          'name' => ['required',
+            Rule::unique('classrooms')->ignore($classroom->id),
+        ]
+          ]);
+
+        if($request->input('name') == $classroom->name){
+          return redirect()->back()->with('warning_message', "You didn't change any data.");
+        }
+        $updatedClassroom = $request->all();
+        $classroom->fill($updatedClassroom)->save();
+        return redirect()->back()->with('flash_message', "Class successfully updated!");
+
+
+
     }
 
     /**
@@ -93,6 +112,10 @@ class ClassroomController extends Controller
      */
     public function destroy(Classroom $classroom)
     {
-        //
+        $classroomId = $classroom->id;
+        $classroom = Classroom::findOrFail($classroomId);
+        $classroom->delete();
+        return redirect()->route('classrooms.index')
+          ->with('flash_message', "Class successfully deleted!");
     }
 }

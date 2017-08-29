@@ -117,11 +117,11 @@ class UserController extends Controller
         return redirect()->back()->with('warning_message', "You didn't change any data.");
       }
 
-      $updateUser = $request->all();
+      $updatedUser = $request->all();
       // $role = $user->roles->first()->name;
       $role = $request->input('role');
 
-      $user->fill($updateUser)->save();
+      $user->fill($updatedUser)->save();
 
 
 
@@ -140,9 +140,13 @@ class UserController extends Controller
         $userId = $user->id;
         $user = User::findOrFail($userId);
         $role = $user->roles->first()->name;
+        $authId =  \Auth::user()->id;
         $user->delete();
+        if($userId == $authId){
 
-        return redirect()->route('home')
+          return redirect()->route('home');
+        }
+        return redirect()->route('user.list.role', $role)
           ->with('flash_message', "$role successfully deleted!");
     }
 }

@@ -67,9 +67,8 @@
 
                   {!! Form::submit("Create $role", ['class' => 'btn btn-primary']) !!}
 
+                  <a href="{{ route('user.list.role', $role) }}" class="btn btn-info">Back to all {{$role}}s</a>
                   {!! Form::close() !!}
-
-
 
 
                 </div>
@@ -77,9 +76,7 @@
         </div>
     </div>
 </div>
-<!-- <h1>Add a New Task</h1>
-<p class="lead">Add to your user list below.</p>
-<hr> -->
+
 
 
 

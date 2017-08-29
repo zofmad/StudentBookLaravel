@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Subject;
+use App\Models\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Validation\Rule;
 class SubjectController extends Controller
 {
     /**
@@ -14,7 +15,10 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        //
+      $subjects = Subject::all();
+
+
+      return view('subject.list')->withSubjects($subjects);
     }
 
     /**
@@ -24,7 +28,16 @@ class SubjectController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::all();
+        $teachers = [];
+        foreach($users as $user){
+          if($user->hasRole('Teacher')){
+            $teachers[] = $user;
+          }
+        }
+
+        $teachers = array_pluck($teachers, 'email', 'id');
+        return view('subject.create')->withTeachers($teachers);
     }
 
     /**
@@ -35,7 +48,20 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      // dd($request);
+      $this->validate($request, [
+        'name' => 'required|unique:subjects',
+        'teacher_id' => 'required'
+      ]);
+      $newSubject = $request->all();
+
+      $subject = Subject::create($newSubject);
+      $subject->teacher_id = $request->input('teacher_id');
+      $subject->save();
+
+      return redirect()->back()
+      ->with('flash_message', 'New subject '.$subject['name'].' successfully added!');
+
     }
 
     /**

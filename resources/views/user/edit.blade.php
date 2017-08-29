@@ -40,7 +40,7 @@
                       {!! Form::hidden('role', $role) !!}
                   </div>
 
-                  {!! Form::submit('Update Task', ['class' => 'btn btn-primary']) !!}
+                  {!! Form::submit("Update $role", ['class' => 'btn btn-primary']) !!}
 
                   {!! Form::close() !!}
 
