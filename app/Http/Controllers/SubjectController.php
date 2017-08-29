@@ -54,7 +54,7 @@ class SubjectController extends Controller
         'teacher_id' => 'required'
       ]);
       $newSubject = $request->all();
-
+//nie d
       $subject = Subject::create($newSubject);
       $subject->teacher_id = $request->input('teacher_id');
       $subject->save();
