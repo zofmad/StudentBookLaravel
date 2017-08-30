@@ -38,7 +38,7 @@
                   </div>
                   <div class="form-group">
                       {!! Form::label('teacher', 'Teacher:', ['class' => 'control-label']) !!}
-                      {!! Form::select('teacher_id', $teachers, ['class' => 'form-control']) !!}
+                      {!! Form::select('teacher_id', ["Select teacher", "teachers" => $teachers], null, ['class' => 'form-control']) !!}
                   </div>
 
                   {!! Form::submit("Create subject", ['class' => 'btn btn-primary']) !!}

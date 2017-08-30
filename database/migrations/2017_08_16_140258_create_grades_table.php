@@ -22,9 +22,8 @@ class CreateGradesTable extends Migration
             $table->foreign('subject_id')->references('id')->on('subjects')
                 ->onUpdate('cascade')->onDelete('cascade');
 
-            $table->string('note');
-            $table->unsignedTinyInteger('value_old')->nullable();
-            $table->unsignedTinyInteger('value_new');
+            $table->string('note')->nullable();
+            $table->tinyInteger('value');
             $table->timestamps();
         });
     }

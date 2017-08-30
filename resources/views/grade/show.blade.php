@@ -8,7 +8,7 @@
 @section('title', 'StudentBook')
 
 @section('content_header')
-    <h1>{{$role}} profile</h1>
+    <h1>Grade profile</h1>
 @stop
 
 
@@ -20,23 +20,16 @@
 
 
 
-                <div class="panel-heading lead">{{$user->name}}</div>
-
                 <div class="panel-body">
-                  <p class="lead"> Name: {{$user->name}} </p>
-                  <p class="lead"> Email: {{$user->email}} </p>
+                  <p class="lead"> Grade value: {{$grade->value}} </p>
+                  <p class="lead"> Note: {{$grade->note}} </p>
+                  <p class="lead"> Date: {{$grade->created_at}} </p>
+                  <p class="lead"> For student: <a href="{{ route('user.show.role', ['role' => 'Student', 'user' => $student]) }}">{{$student->name}}</a></p>
+                  <p class="lead"> For subject: <a href="{{ route('subjects.show', $subject) }}">{{$subject->name}}</a></p>
+                  <p class="lead"> Added by: <a href="{{ route('user.show.role', ['role' => 'Teacher', 'user' => $teacher]) }}">{{$teacher->name}}</a></p>
                   <hr>
-                  <a href="{{ route('user.list.role', $role) }}" class="btn btn-info">Back to all {{$role}}s</a>
-                  <a href="{{ route('user.edit.role', ['role' => $role, 'user' => $user]) }}" class="btn btn-primary">Edit {{$role}}</a>
-                  <div class="pull-right">
-                    {!! Form::open([
-                        'method' => 'DELETE',
-                        'route' => ['user.destroy', $user]
-                    ]) !!}
-                        {!! Form::hidden('role', $role) !!}
-                        {!! Form::submit("Delete this $role?", ['class' => 'btn btn-danger']) !!}
-                    {!! Form::close() !!}
-                  </div>
+                  <a href="{{ route('grades.index') }}" class="btn btn-info">Back to all grades</a>
+
                 </div>
             </div>
         </div>

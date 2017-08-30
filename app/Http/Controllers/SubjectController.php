@@ -51,13 +51,12 @@ class SubjectController extends Controller
       // dd($request);
       $this->validate($request, [
         'name' => 'required|unique:subjects',
-        'teacher_id' => 'required'
+        'teacher_id' => ['required',
+        Rule::notIn(['0'])],
       ]);
       $newSubject = $request->all();
-//nie d
+
       $subject = Subject::create($newSubject);
-      $subject->teacher_id = $request->input('teacher_id');
-      $subject->save();
 
       return redirect()->back()
       ->with('flash_message', 'New subject '.$subject['name'].' successfully added!');
@@ -72,7 +71,10 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject)
     {
-        //
+      $subjectId = $subject->id;
+      $subject = Subject::findOrFail($subjectId);
+      $teacher = User::where('id', '=', $subject->teacher_id)->first();
+      return view('subject.show', ['subject' => $subject, 'teacher' => $teacher]);
     }
 
     /**
@@ -83,7 +85,18 @@ class SubjectController extends Controller
      */
     public function edit(Subject $subject)
     {
-        //
+      $subjectId = $subject->id;
+      $subject = Subject::findorFail($subjectId);
+      $users = User::all();
+      $teachers = [];
+      foreach($users as $user){
+        if($user->hasRole('Teacher')){
+          $teachers[] = $user;
+        }
+      }
+
+      $teachers = array_pluck($teachers, 'email', 'id');
+      return view('subject.edit')->withSubject($subject)->withTeachers($teachers);
     }
 
     /**
@@ -95,7 +108,23 @@ class SubjectController extends Controller
      */
     public function update(Request $request, Subject $subject)
     {
-        //
+      $subjectId = $subject->id;
+      $subject = Subject::findorFail($subjectId);
+      $this->validate($request, [
+        'teacher_id' => 'required|numeric',
+        'name' => ['required',
+          Rule::unique('subjects')->ignore($subject->id),
+      ]
+        ]);
+
+      if($request->input('name') == $subject->name && $request->input('teacher_id') == $subject->teacher_id){
+        return redirect()->back()->with('warning_message', "You didn't change any data.");
+      }
+      $updatedSubject = $request->all();
+      $subject->fill($updatedSubject)->save();
+      return redirect()->back()->with('flash_message', "Subject successfully updated!");
+
+
     }
 
     /**
@@ -106,6 +135,10 @@ class SubjectController extends Controller
      */
     public function destroy(Subject $subject)
     {
-        //
+      $subjectId = $subject->id;
+      $subject = Subject::findOrFail($subjectId);
+      $subject->delete();
+      return redirect()->route('subjects.index')
+        ->with('flash_message', "Subject successfully deleted!");
     }
 }

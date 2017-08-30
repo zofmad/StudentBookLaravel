@@ -153,7 +153,7 @@ return [
 
         [
             'text'       => 'All grades',
-            'url'  => 'admin/settings',
+            'url'  => 'grades',
             'icon_color' => 'yellow',
             'can' => 'see-all-grades',
         ],

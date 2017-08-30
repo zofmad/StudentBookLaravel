@@ -14,8 +14,8 @@ class TestController extends Controller
     {
         // $user = new \App\Models\User();
         //  var_dump($user);
-
-       //
+       // 
+      //  //
       //    DB::table('users')->insert([
       //        'name' => "teacher",
       //        'email' => "teacher@gmail.com",
@@ -34,7 +34,7 @@ class TestController extends Controller
       //   $role = Role::where('name', '=', 'Student')->first();
       //  $teacher->attachRole($role);
       //  $teacher->save();
-       //
+      //  //
        //
        //
       //   $permission = new \App\Models\Permission();
@@ -64,7 +64,7 @@ class TestController extends Controller
         //
         // $director->save();
         // var_dump($director);
-
+// INSERT INTO `grades` (`id`, `student_id`, `subject_id`, `note`, `value`, `created_at`, `updated_at`) VALUES ('1', '2', '1', NULL, '3', NULL, NULL);
 
 
     }

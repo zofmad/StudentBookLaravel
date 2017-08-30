@@ -37,6 +37,9 @@
 
                 </div>
                 <a href="{{ route('classrooms.create') }}" class="btn btn-primary">Add new class</a>
+                <br><br>
+                <a href="{{ route('classrooms.create') }}" class="btn btn-info"><b>View statistics of grades per class</a>
+
 
 
             </div>

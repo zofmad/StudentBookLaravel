@@ -7,7 +7,7 @@
 @section('title', 'StudentBook')
 
 @section('content_header')
-    <h1>Edit class</h1>
+    <h1>Edit subject</h1>
 @stop
 
 
@@ -18,32 +18,36 @@
             <div class="panel panel-default">
 
 
-                <div class="panel-heading lead">Edit class {{$classroom->name}}</div>
+                <div class="panel-heading lead">Edit subject {{$subject->name}}</div>
 
                     @include('partials.alerts.errors')
 
 
 
                 <div class="panel-body">
-                  {!! Form::model($classroom, [
+                  {!! Form::model($subject, [
                       'method' => 'PATCH',
-                      'route' => ['classrooms.update', $classroom]
+                      'route' => ['subjects.update', $subject]
                   ]) !!}
                   <div class="form-group">
                       {!! Form::label('name', 'Name:', ['class' => 'control-label']) !!}
                       {!! Form::text('name', null, ['class' => 'form-control']) !!}
                   </div>
+                  <div class="form-group">
+                      {!! Form::label('teacher', 'Teacher:', ['class' => 'control-label']) !!}
+                      {!! Form::select('teacher_id', $teachers, null, ['class' => 'form-control']) !!}
+                  </div>
 
 
 
-                  {!! Form::submit('Update Class', ['class' => 'btn btn-primary']) !!}
+                  {!! Form::submit('Update subject', ['class' => 'btn btn-primary']) !!}
 
                   {!! Form::close() !!}
 
 
 
                   <hr>
-                  <a href="{{ route('classrooms.index') }}" class="btn btn-info">Back to all classes</a>
+                  <a href="{{ route('subjects.index') }}" class="btn btn-info">Back to all subjects</a>
 
 
                 </div>

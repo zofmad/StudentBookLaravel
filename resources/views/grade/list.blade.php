@@ -1,4 +1,5 @@
 
+use App\Models\User;
 
 
 @extends('adminlte::page')
@@ -6,7 +7,7 @@
 @section('title', 'StudentBook')
 
 @section('content_header')
-    <h1>{{$role}}s</h1>
+    <h1>Grades</h1>
 @stop
 
 
@@ -17,15 +18,20 @@
             <div class="panel panel-default">
 
 
-                <div class="panel-heading lead">List of all {{$role}}s:</div>
+                <div class="panel-heading lead">List of all grades:</div>
 
                 <div class="panel-body">
-                  @foreach($users as $user)
-                    <h3>{{ $user->name }}</h3>
-                    <p>{{ $user->email}}</p>
+                  @foreach($grades as $grade)
+                  <?php
+
+                  $studentId = $grade['student_id'];
+                  $student = \App\Models\User::where('id', '=', $studentId)->first();
+                  ?>
+                    <h3>{{ $student->name }}</h3>
+
+                    <p>{{ $grade->value}}</p>
                     <p>
-                        <a href="{{ route('user.show.role', ['role' => $role, 'user' => $user]) }}" class="btn btn-info">View {{$role}}</a>
-                        <a href="{{ route('user.edit.role', ['role' => $role, 'user' => $user]) }}" class="btn btn-primary">Edit {{$role}}</a>
+                        <a href="{{ route('grades.show', $grade) }}" class="btn btn-info">View grade</a>
                     </p>
                     <hr>
                   @endforeach
@@ -36,7 +42,7 @@
 
 
                 </div>
-                <a href="{{ route('user.create.role', $role) }}" class="btn btn-primary">Add new {{$role}}</a>
+
 
 
             </div>

@@ -34,7 +34,7 @@
                         'route' => ['user.destroy', $user]
                     ]) !!}
                         {!! Form::hidden('role', $role) !!}
-                        {!! Form::submit("Delete this $role?", ['class' => 'btn btn-danger']) !!}
+                        {!! Form::submit("Delete this $role", ['class' => 'btn btn-danger']) !!}
                     {!! Form::close() !!}
                   </div>
                 </div>

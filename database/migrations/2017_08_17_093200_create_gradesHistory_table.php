@@ -24,7 +24,9 @@ class CreateGradesHistoryTable extends Migration
                 ->onUpdate('cascade')->onDelete('no action');
 
             $table->string('note')->nullable();
-            $table->tinyInteger('value');
+
+            $table->unsignedTinyInteger('value_old')->nullable();
+            $table->unsignedTinyInteger('value_new');
             $table->enum('action', ['insert grade', 'change grade', 'delete grade']);
             $table->dateTime('created_at');
 

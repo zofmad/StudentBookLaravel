@@ -22,7 +22,7 @@
                 <div class="panel-body">
                   @foreach($subjects as $subject)
                     <h3>{{ $subject->name }}</h3>
-                    <p></p>
+                
                     <p>
                         <a href="{{ route('subjects.show', ['subject' => $subject]) }}" class="btn btn-info">View subject</a>
                         <a href="{{ route('subjects.edit', ['subject' => $subject]) }}" class="btn btn-primary">Edit subject</a>
