@@ -33,7 +33,7 @@
                         'method' => 'DELETE',
                         'route' => ['subjects.destroy', $subject]
                     ]) !!}
-                        {!! Form::submit("Delete this subject", ['class' => 'btn btn-danger']) !!}
+                        {!! Form::submit("Delete subject", ['class' => 'btn btn-danger']) !!}
                     {!! Form::close() !!}
                   </div>
                 </div>

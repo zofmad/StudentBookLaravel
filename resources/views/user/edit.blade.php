@@ -47,8 +47,9 @@
 
 
                   <hr>
+                  @if($role != "me")
                   <a href="{{ route('user.list.role', $role) }}" class="btn btn-info">Back to all {{$role}}s</a>
-
+                  @endif
 
                 </div>
             </div>

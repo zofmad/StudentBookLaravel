@@ -31,7 +31,7 @@
                         'method' => 'DELETE',
                         'route' => ['classrooms.destroy', $classroom]
                     ]) !!}
-                        {!! Form::submit("Delete this class", ['class' => 'btn btn-danger']) !!}
+                        {!! Form::submit("Delete class", ['class' => 'btn btn-danger']) !!}
                     {!! Form::close() !!}
                   </div>
                 </div>

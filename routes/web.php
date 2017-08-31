@@ -44,5 +44,11 @@ Route::resource('classrooms', 'ClassroomController');
 Route::resource('grades', 'GradeController');
 Route::get('user/create/{role}', 'UserController@create')->name('user.create.role');
 Route::get('user/list/{role}', 'UserController@index')->name('user.list.role');
-Route::get('user/show/{role}/{user?}', 'UserController@show')->name('user.show.role');
-Route::get('user/edit/{role}/{user?}', 'UserController@edit')->name('user.edit.role');
+Route::get('user/show/{role?}/{user?}', 'UserController@show')->name('user.show.role');
+Route::get('user/edit/{role?}/{user?}', 'UserController@edit')->name('user.edit.role');
+Route::get('user/changePassword/{role?}/{user?}', 'UserController@changePassword')->name('user.changePassword.role');
+Route::match(array('PUT', 'PATCH'), "user/pass/{user}", array(
+      'uses' => 'UserController@updatePassword',
+      'as' => 'user.updatePassword'
+));
+// Route::post('user/pass/{user?}', 'UserController@updatePassword')->name('user.updatePassword');

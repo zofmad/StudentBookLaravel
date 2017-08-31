@@ -124,7 +124,7 @@ return [
         'ACCOUNT SETTINGS',
         [
             'text' => 'Profile',
-            'url'  => 'user/edit/Your',
+            'url'  => 'user/show',
             'icon' => 'user',
             'icon_color' => 'green',
         ],

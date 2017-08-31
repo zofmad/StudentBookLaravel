@@ -8,7 +8,12 @@
 @section('title', 'StudentBook')
 
 @section('content_header')
-    <h1>{{$role}} profile</h1>
+    @if($role != "me")
+    <h1>{{$role}}
+    @else
+    <h1>My
+    @endif
+    profile</h1>
 @stop
 
 
@@ -25,18 +30,30 @@
                 <div class="panel-body">
                   <p class="lead"> Name: {{$user->name}} </p>
                   <p class="lead"> Email: {{$user->email}} </p>
+                  <a href="{{ route('user.changePassword.role', ['role' => $role, 'user' => $user]) }}" class="pull-right btn" style="color: black">Change password</a>
+                  <br>
+
                   <hr>
-                  <a href="{{ route('user.list.role', $role) }}" class="btn btn-info">Back to all {{$role}}s</a>
-                  <a href="{{ route('user.edit.role', ['role' => $role, 'user' => $user]) }}" class="btn btn-primary">Edit {{$role}}</a>
-                  <div class="pull-right">
-                    {!! Form::open([
-                        'method' => 'DELETE',
-                        'route' => ['user.destroy', $user]
-                    ]) !!}
-                        {!! Form::hidden('role', $role) !!}
-                        {!! Form::submit("Delete this $role", ['class' => 'btn btn-danger']) !!}
-                    {!! Form::close() !!}
-                  </div>
+
+                  @if($role != "me" || \Entrust::hasRole('Director'))
+                    @if($role != "me")
+                      <a href="{{ route('user.list.role', $role) }}" class="btn btn-info">Back to all {{$role}}s</a>
+                    @endif
+
+
+                    <a href="{{ route('user.edit.role', ['role' => $role, 'user' => $user]) }}" class="btn btn-primary">Edit profile</a>
+
+                    <div class="pull-right">
+                      {!! Form::open([
+                          'method' => 'DELETE',
+                          'route' => ['user.destroy', $user]
+                      ]) !!}
+                          {!! Form::hidden('role', $role) !!}
+                          {!! Form::submit("Delete $role", ['class' => 'btn btn-danger']) !!}
+                      {!! Form::close() !!}
+                    </div>
+
+                  @endif
                 </div>
             </div>
         </div>

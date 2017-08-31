@@ -1,5 +1,5 @@
 @extends('adminlte::master')
-
+@extends('adminlte::passwords.reset')
 @section('adminlte_css')
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/css/auth.css') }}">
     @yield('css')
