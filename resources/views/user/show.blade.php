@@ -30,6 +30,9 @@
                 <div class="panel-body">
                   <p class="lead"> Name: {{$user->name}} </p>
                   <p class="lead"> Email: {{$user->email}} </p>
+                  @if($role == 'Student')
+                    <p class="lead"> Class: <a href="{{ route('classrooms.show', $class) }}">{{$class->name}}</a> </p>
+                  @endif
                   <a href="{{ route('user.changePassword.role', ['role' => $role, 'user' => $user]) }}" class="pull-right btn" style="color: black">Change password</a>
                   <br>
 

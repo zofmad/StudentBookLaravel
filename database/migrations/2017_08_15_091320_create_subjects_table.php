@@ -15,7 +15,7 @@ class CreateSubjectsTable extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('teacher_id')->unsigned()->nullable();
+            $table->integer('teacher_id')->unsigned();
             $table->foreign('teacher_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->string('name')->unique();

@@ -36,17 +36,17 @@ password</h1>
                   @if(!Entrust::can('users-CRUD'))
                     <div class="form-group">
                         {!! Form::label('old_password', 'Old password:', ['class' => 'control-label']) !!}
-                        {!! Form::text('old_password', null, ['class' => 'form-control']) !!}
+                        {!! Form::password('old_password', null, ['class' => 'form-control']) !!}
                     </div>
                   @endif
                   <div class="form-group">
-                      {!! Form::label('password', 'New password:', ['class' => 'control-label']) !!}
-                      {!! Form::text('password', null, ['class' => 'form-control']) !!}
+                      {!! Form::label('new_password', 'New password:', ['class' => 'control-label']) !!}
+                      {!! Form::password('new_password', null, ['class' => 'form-control']) !!}
                   </div>
 
                   <div class="form-group">
                       {!! Form::label('repeat_password', 'Repeat password:', ['class' => 'control-label']) !!}
-                      {!! Form::text('repeat_password', null, ['class' => 'form-control']) !!}
+                      {!! Form::password('repeat_password', null, ['class' => 'form-control']) !!}
                       {!! Form::hidden('role', $role) !!}
                       {!! Form::hidden('user', $user) !!}
                   </div>

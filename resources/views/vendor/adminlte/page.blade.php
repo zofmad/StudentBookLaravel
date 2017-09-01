@@ -120,8 +120,13 @@
                     </div>
                 @endif
                 @if(Session::has('warning_message'))
-                    <div class="alert alert-warning">
-                        {{ Session::get('warning_message') }}
+                    <div class="alert alert-warning alert-block">
+                        {!! Session::get('warning_message') !!}
+                    </div>
+                @endif
+                @if(Session::has('danger_message'))
+                    <div class="alert alert-danger alert-block">
+                        {{ Session::get('danger_message') }}
                     </div>
                 @endif
                   <!-- Main content -->

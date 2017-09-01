@@ -23,55 +23,68 @@
 
 
                 <div class="panel-heading lead">Enter the personal details of a new {{$role}} below.</div>
+                @role('Director')
+                  <div class="panel-body">
 
-                <div class="panel-body">
 
 
+                    {!! Form::open([
+                        'route' => 'user.store'
+                    ]) !!}
 
-                  {!! Form::open([
-                      'route' => 'user.store'
-                  ]) !!}
+                    <div class="form-group">
+                        {!! Form::label('name', 'Name:', ['class' => 'control-label']) !!}
+                        {!! Form::text('name', null, ['class' => 'form-control']) !!}
+                    </div>
 
-                  <div class="form-group">
-                      {!! Form::label('name', 'Name:', ['class' => 'control-label']) !!}
-                      {!! Form::text('name', null, ['class' => 'form-control']) !!}
+                    <div class="form-group">
+                        {!! Form::label('email', 'Email:', ['class' => 'control-label']) !!}
+                        {!! Form::email('email', null, ['class' => 'form-control']) !!}
+
+                    </div>
+
+                    <div class="form-group">
+                      <?php
+                      // include 'Text/Password.php';
+                      // $tp = new Text_Password();
+                      // $pass = $tp->create(10).rand(0,1000);
+
+                      //narazie bez sprawdzania sily hasla
+                      $genPass = str_random(10);
+                      $hashedGenPass = Hash::make("$genPass");
+
+
+                      ?>
+
+
+                        {!! Form::label('password', "Generated password: $genPass", ['class' => 'control-label']) !!}
+                        {!! Form::hidden('password', $hashedGenPass) !!}
+                        {!! Form::hidden('role', $role) !!}
+
+
+                    </div>
+                    @if($role == 'Teacher')
+                      <div class="form-group">
+                          {!! Form::label('subject', 'Assign subject:', ['class' => 'control-label']) !!}
+                          {!! Form::select('subject_id', ["Select subject", "subjects" => $subjects], null, ['class' => 'form-control']) !!}
+                      </div>
+                    @elseif($role == 'Student')
+                      <div class="form-group">
+                          {!! Form::label('class', 'Add to class:', ['class' => 'control-label']) !!}
+                          {!! Form::select('usertable_id', ["Select class", "classes" => $classes], null, ['class' => 'form-control']) !!}
+                          {!! Form::hidden('usertable_type', "class") !!}
+                      </div>
+
+                    @endif
+
+                    {!! Form::submit("Create $role", ['class' => 'btn btn-primary']) !!}
+
+                    <a href="{{ route('user.list.role', $role) }}" class="btn btn-info">Back to all {{$role}}s</a>
+                    {!! Form::close() !!}
+
+
                   </div>
-
-                  <div class="form-group">
-                      {!! Form::label('email', 'Email:', ['class' => 'control-label']) !!}
-                      {!! Form::email('email', null, ['class' => 'form-control']) !!}
-
-                  </div>
-
-                  <div class="form-group">
-                    <?php
-                    // include 'Text/Password.php';
-                    // $tp = new Text_Password();
-                    // $pass = $tp->create(10).rand(0,1000);
-
-                    //narazie bez sprawdzania sily hasla
-                    $genPass = str_random(10);
-                    $hashedGenPass = Hash::make("$genPass");
-
-
-                    ?>
-
-
-                      {!! Form::label('password', "Generated password: $genPass", ['class' => 'control-label']) !!}
-                      {!! Form::hidden('password', $hashedGenPass) !!}
-                      {!! Form::hidden('role', $role) !!}
-
-
-                  </div>
-
-
-                  {!! Form::submit("Create $role", ['class' => 'btn btn-primary']) !!}
-
-                  <a href="{{ route('user.list.role', $role) }}" class="btn btn-info">Back to all {{$role}}s</a>
-                  {!! Form::close() !!}
-
-
-                </div>
+                @endrole
             </div>
         </div>
     </div>

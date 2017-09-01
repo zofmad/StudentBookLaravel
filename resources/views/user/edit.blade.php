@@ -23,36 +23,50 @@
                     @include('partials.alerts.errors')
 
 
+                @role('Director')
+                  <div class="panel-body">
+                    {!! Form::model($user, [
+                        'method' => 'PATCH',
+                        'route' => ['user.update', $user]
+                    ]) !!}
+                    <div class="form-group">
+                        {!! Form::label('name', 'Name:', ['class' => 'control-label']) !!}
+                        {!! Form::text('name', null, ['class' => 'form-control']) !!}
+                    </div>
 
-                <div class="panel-body">
-                  {!! Form::model($user, [
-                      'method' => 'PATCH',
-                      'route' => ['user.update', $user]
-                  ]) !!}
-                  <div class="form-group">
-                      {!! Form::label('name', 'Name:', ['class' => 'control-label']) !!}
-                      {!! Form::text('name', null, ['class' => 'form-control']) !!}
+                    <div class="form-group">
+                        {!! Form::label('email', 'Email:', ['class' => 'control-label']) !!}
+                        {!! Form::email('email', null, ['class' => 'form-control']) !!}
+                        {!! Form::hidden('role', $role) !!}
+                    </div>
+
+                    @if($role == 'Teacher')
+                      <div class="form-group">
+                          {!! Form::label('subject', 'Assign subject:', ['class' => 'control-label']) !!}
+                          {!! Form::select('subject_id', $subjects, null, ['class' => 'form-control']) !!}
+                      </div>
+                    @elseif($role == 'Student')
+                      <div class="form-group">
+                          {!! Form::label('class', 'Add to class:', ['class' => 'control-label']) !!}
+                          {!! Form::select('usertable_id', $classes, null, ['class' => 'form-control']) !!}
+                          {!! Form::hidden('usertable_type', "class") !!}
+                      </div>
+
+                    @endif
+
+                    {!! Form::submit("Update $role", ['class' => 'btn btn-primary']) !!}
+
+                    {!! Form::close() !!}
+
+
+
+                    <hr>
+                    @if($role != "me")
+                    <a href="{{ route('user.list.role', $role) }}" class="btn btn-info">Back to all {{$role}}s</a>
+                    @endif
+
                   </div>
-
-                  <div class="form-group">
-                      {!! Form::label('email', 'Email:', ['class' => 'control-label']) !!}
-                      {!! Form::email('email', null, ['class' => 'form-control']) !!}
-                      {!! Form::hidden('role', $role) !!}
-                  </div>
-
-                  {!! Form::submit("Update $role", ['class' => 'btn btn-primary']) !!}
-
-                  {!! Form::close() !!}
-
-
-
-                  <hr>
-                  @if($role != "me")
-                  <a href="{{ route('user.list.role', $role) }}" class="btn btn-info">Back to all {{$role}}s</a>
-                  @endif
-
-                </div>
-            </div>
+                  @endrole
         </div>
     </div>
 </div>

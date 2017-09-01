@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-
+use App\Models\Subject;
+use App\Models\Classroom;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -33,7 +34,9 @@ class UserController extends Controller
           $usersWithRole[] = $users[$i];
         }
       }
-      return view('user.list', ['role' => $role])->withUsers($usersWithRole);
+
+      return view('user.list', ['role' => $role])
+      ->withUsers($usersWithRole);
     }
 
     /**
@@ -43,7 +46,20 @@ class UserController extends Controller
      */
     public function create(string $role)
     {
-        return view('user.create', ['role' => $role]);
+      $classes = null;
+      $subjects = null;
+      if($role == 'Teacher'){
+        $subjects = Subject::all();
+        $subjects = array_pluck($subjects, 'name', 'id');
+      }
+
+
+      if($role == 'Student'){
+        $classes = Classroom::all();
+        $classes = array_pluck($classes, 'name', 'id');
+      }
+
+      return view('user.create', ['role' => $role, 'classes' => $classes, 'subjects' => $subjects]);
     }
 
     /**
@@ -60,12 +76,33 @@ class UserController extends Controller
         'password' => 'required',
         'role' => 'required'
       ]);
+      if($request->input('role') == 'Student'){
+
+        $this->validate($request, [
+          'usertable_id' => 'required|numeric|min:1',
+          'usertable_type' => ['required', Rule::in(['class']),],
+        ]);
+      }
+
+
+
       $newUser = $request->all();
 
       $user = User::create($newUser);
-      $role = Role::where('name', '=', $newUser['role'])->first();
+      $role = Role::where('name', '=', $request->input('role'))->first();
       $user->attachRole($role);
+
       $user->save();
+      if($request->input('role') == 'Teacher' && $request->input('subject_id')){
+
+        $subject = Subject::where('id', '=', $request->input('subject_id'))->first();
+
+        $subject->teacher_id = $user->id;
+        $subject->save();
+
+      }
+
+
       // \Session::flash('flash_message', $newUser['role']." ".$newUser['name']." successfully added!");
       return redirect()->back()
       ->with('flash_message', $newUser['role']." ".$newUser['name']." successfully added!");
@@ -79,6 +116,7 @@ class UserController extends Controller
     public function show(string $role = null, User $user = null)
     {
 
+
       if($user->id == null){
         $user = \Auth::user();
 
@@ -90,9 +128,17 @@ class UserController extends Controller
       // if($role == null){
       //   $role = $user->roles->first()->name;
       // }
+      $class = null;
+      if($role == "Student"){
+        if($user->usertable_type == 'class'){
+          $class = Classroom::where('id', '=', $user->usertable_id)->first();
+
+        }
+
+      }
       $userId = $user->id;
       $user = User::findOrFail($userId);
-      return view('user.show', ['user' => $user])->withRole($role);
+      return view('user.show', ['user' => $user, 'class' => $class])->withRole($role);
     }
 
     /**
@@ -109,7 +155,24 @@ class UserController extends Controller
       // if($role == null){
       //   $role = \Auth::user()->roles->first()->name;
       // }
-      return view('user.edit', ['user' => $user])->withRole($role);
+
+
+      $classes = null;
+      $subjects = null;
+      if($role == 'Teacher'){
+
+        $subjects = Subject::where('teacher_id', '!=', $userId)->get();
+
+        $subjects = array_pluck($subjects, 'name', 'id');
+
+      }
+
+
+      if($role == 'Student'){
+        $classes = Classroom::all();
+        $classes = array_pluck($classes, 'name', 'id');
+      }
+      return view('user.edit', ['user' => $user, 'classes' => $classes, 'subjects' => $subjects])->withRole($role);
     }
 
     /**
@@ -132,17 +195,37 @@ class UserController extends Controller
           Rule::unique('users')->ignore($user->id),
         ]
       ]);
+      if($request->input('role') == 'Student'){
 
-      if($request->input('email') == $user->email && $request->input('name') == $user->name) {
-
-        return redirect()->back()->with('warning_message', "You didn't change any data.");
+        $this->validate($request, [
+          'usertable_id' => 'required|numeric|min:1',
+          'usertable_type' => ['required', Rule::in(['class']),],
+        ]);
       }
+
+
 
       $updatedUser = $request->all();
       // $role = $user->roles->first()->name;
       $role = $request->input('role');
 
       $user->fill($updatedUser)->save();
+
+      if($request->input('role') == 'Teacher' && $request->input('subject_id')){
+
+        $subject = Subject::where('id', '=', $request->input('subject_id'))->first();
+
+        $subject->teacher_id = $user->id;
+        $subject->save();
+
+      }
+
+      if($request->input('email') == $user->email && $request->input('name') == $user->name
+        && (!$request->input('usertable_id') || $request->input('usertable_id') == $user->usertable_id)
+        && (!$request->input('subject_id')) ) {
+
+        return redirect()->back()->with('warning_message', "You didn't change any data.");
+      }
 
 
 
@@ -183,32 +266,51 @@ class UserController extends Controller
 
       ///logika zmiany hasla...
 
-      if($request->input('email') == $user->email && $request->input('name') == $user->name) {
+      $formCorrect = true;
+      $warningMessage = '';
+      if(!$user->can('users-CRUD')){
 
-        return redirect()->back()->with('warning_message', "You didn't change any data.");
+        if(!\Hash::check($request->input('old_password'), $user->password)) {
+
+          $warningMessage .= "Old password is incorrect.";
+          $formCorrect = false;
+
+        }
       }
-      if($user->hasRole('Director')){
-        $this->validate($request, [
-          'password' => 'required|min:8',
-          ]
-        );
-      } else {
-        $this->validate($request, [
-          'password' => 'required|min:8',
-        ]);
+      if(\Hash::check($request->input('new_password'), $user->password)) {
+
+        $warningMessage .= "New password is the same as old password.";
+        $formCorrect = false;
+
       }
 
+      if(strlen($request->input('new_password')) < 10) {
+        $warningMessage .= "Password has to have minimum length of 10 characters.";
+        $formCorrect = false;
+
+      }
+      if($request->input('new_password') != $request->input('repeat_password')) {
+        $warningMessage .= "New password and Repeat password doesn't match.";
+        $formCorrect = false;
+
+      }
+
+
+      if(!$formCorrect){
+        return redirect()->back()->with('warning_message', $warningMessage);
+
+
+      }
 
 
       $updatedUser = $request->all();
       // $role = $user->roles->first()->name;
       $role = $request->input('role');
-        $updatedUser['password'] = \Hash::make($request->input('password'));
+        $updatedUser['password'] = \Hash::make($request->input('new_password'));
       $user->fill($updatedUser)->save();
 
+      return redirect()->back()->with('flash_message', "Password successfully changed.");
 
-
-      return redirect()->back()->with('flash_message', "$role successfully updated!");
     }
 
     /**
