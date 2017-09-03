@@ -22,7 +22,16 @@
 
                 <div class="panel-body">
                   <p class="lead"> Name: {{$subject->name}} </p>
-                  <p class="lead"> Teacher: <a href="{{ route('user.show.role', ['role' => 'Teacher', 'user' => $teacher]) }}">{{$teacher->name}}</p>
+                  <p class="lead"> Teacher: <a href="{{ route('user.show.role', ['role' => 'Teacher', 'user' => $teacher]) }}">{{$teacher->name}}</a></p>
+                  <p class="lead"> Classes:
+                    <ul>
+                        @foreach($classrooms as $classroom)
+                            <li>
+                                <a href="{{ route('classrooms.show', $classroom) }}">{{$classroom->name}}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                  </p>
 
 
                   <hr>

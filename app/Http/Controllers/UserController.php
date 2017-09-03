@@ -93,13 +93,14 @@ class UserController extends Controller
       $user->attachRole($role);
 
       $user->save();
-      if($request->input('role') == 'Teacher' && $request->input('subject_id')){
+      if($request->input('role') == 'Teacher' && $request->input('subject_ids')){
+          foreach($request->input('subject_ids') as $subjectId){
+            $subject = Subject::where('id', '=', $subjectId)->first();
+            $subject->teacher_id = $user->id;
+            $subject->save();
 
-        $subject = Subject::where('id', '=', $request->input('subject_id'))->first();
-
-        $subject->teacher_id = $user->id;
-        $subject->save();
-
+          }
+      
       }
 
 
@@ -128,6 +129,8 @@ class UserController extends Controller
       // if($role == null){
       //   $role = $user->roles->first()->name;
       // }
+      $userId = $user->id;
+      $user = User::findOrFail($userId);
       $class = null;
       if($role == "Student"){
         if($user->usertable_type == 'class'){
@@ -136,9 +139,15 @@ class UserController extends Controller
         }
 
       }
-      $userId = $user->id;
-      $user = User::findOrFail($userId);
-      return view('user.show', ['user' => $user, 'class' => $class])->withRole($role);
+      $subjects = null;
+      if($role == "Teacher"){
+          $subjects = Subject::where('teacher_id', '=', $user->id)->get();
+//          $subjects = array_pluck($subjects, 'name', "id");
+          
+      }
+      
+      
+      return view('user.show', ['user' => $user, 'class' => $class, "subjects" => $subjects])->withRole($role);
     }
 
     /**
@@ -203,30 +212,29 @@ class UserController extends Controller
         ]);
       }
 
+      if($request->input('role') == 'Teacher' && $request->input('subject_ids')){
 
+           foreach($request->input('subject_ids') as $subjectId){
+            $subject = Subject::where('id', '=', $subjectId)->first();
+            $subject->teacher_id = $user->id;
+            $subject->save();
+
+          }
+
+      }
+
+      if($request->input('email') == $user->email && $request->input('name') == $user->name
+        && (!$request->input('usertable_id') || $request->input('usertable_id') == $user->usertable_id)
+        && (!$request->input('subject_ids')) ) {
+
+        return redirect()->back()->with('warning_message', "You didn't change any data.");
+      }
 
       $updatedUser = $request->all();
       // $role = $user->roles->first()->name;
       $role = $request->input('role');
 
       $user->fill($updatedUser)->save();
-
-      if($request->input('role') == 'Teacher' && $request->input('subject_id')){
-
-        $subject = Subject::where('id', '=', $request->input('subject_id'))->first();
-
-        $subject->teacher_id = $user->id;
-        $subject->save();
-
-      }
-
-      if($request->input('email') == $user->email && $request->input('name') == $user->name
-        && (!$request->input('usertable_id') || $request->input('usertable_id') == $user->usertable_id)
-        && (!$request->input('subject_id')) ) {
-
-        return redirect()->back()->with('warning_message', "You didn't change any data.");
-      }
-
 
 
       return redirect()->back()->with('flash_message', "$role successfully updated!");
@@ -268,7 +276,7 @@ class UserController extends Controller
 
       $formCorrect = true;
       $warningMessage = '';
-      if(!$user->can('users-CRUD')){
+      if(!\Entrust::can('users-CRUD')){
 
         if(!\Hash::check($request->input('old_password'), $user->password)) {
 

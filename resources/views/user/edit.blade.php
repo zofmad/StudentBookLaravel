@@ -42,8 +42,8 @@
 
                     @if($role == 'Teacher')
                       <div class="form-group">
-                          {!! Form::label('subject', 'Assign subject:', ['class' => 'control-label']) !!}
-                          {!! Form::select('subject_id', $subjects, null, ['class' => 'form-control']) !!}
+                          {!! Form::label('subject', 'Assign subjects(Ctrl+click):', ['class' => 'control-label']) !!}
+                          {!! Form::select('subject_ids[]', $subjects, null, ['multiple'=>'multiple', 'class' => 'form-control']) !!}
                       </div>
                     @elseif($role == 'Student')
                       <div class="form-group">

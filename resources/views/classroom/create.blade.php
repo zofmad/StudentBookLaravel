@@ -33,10 +33,17 @@
                   ]) !!}
 
                   <div class="form-group">
-                      {!! Form::label('name', 'Name:', ['class' => 'control-label']) !!}
-                      {!! Form::text('name', null, ['class' => 'form-control']) !!}
+                    {!! Form::label('name', 'Name:', ['class' => 'control-label']) !!}
+                    {!! Form::text('name', null, ['class' => 'form-control']) !!}
                   </div>
-
+                  <div class="form-group">
+                    {!! Form::label('students', 'Add students:(Ctrl+click)', ['class' => 'control-label']) !!}
+                    {!! Form::select('student_ids[]', $students, null, ['multiple'=>'multiple', 'class' => 'form-control']) !!}
+                  </div>
+                  <div class="form-group">
+                    {!! Form::label('subjects', 'Add subjects:(Ctrl+click)', ['class' => 'control-label']) !!}
+                    {!! Form::select('subject_ids[]', $subjects, null, ['multiple'=>'multiple', 'class' => 'form-control']) !!}
+                  </div>
                   {!! Form::submit("Create class", ['class' => 'btn btn-primary']) !!}
                   <a href="{{ route('classrooms.index') }}" class="btn btn-info">Back to all classes</a>
 

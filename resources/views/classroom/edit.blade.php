@@ -33,8 +33,18 @@
                       {!! Form::label('name', 'Name:', ['class' => 'control-label']) !!}
                       {!! Form::text('name', null, ['class' => 'form-control']) !!}
                   </div>
-
-
+                  <div class="form-group">
+                    {!! Form::label('students', 'Add students:(Ctrl+click)', ['class' => 'control-label']) !!}
+                    {!! Form::select('student_ids[]', $students, null, ['multiple'=>'multiple', 'class' => 'form-control']) !!}
+                  </div>
+                  <div class="form-group">
+                    {!! Form::label('subjects_add', 'Add subjects to class:(Ctrl+click)', ['class' => 'control-label']) !!}
+                    {!! Form::select('subject_add_ids[]', $subjectsAdd, null, ['multiple'=>'multiple', 'class' => 'form-control']) !!}
+                  </div>
+                  <div class="form-group">
+                    {!! Form::label('subjects_remove', 'Delete subjects from class:(Ctrl+click)', ['class' => 'control-label']) !!}
+                    {!! Form::select('subject_remove_ids[]', $subjectsRemove, null, ['multiple'=>'multiple', 'class' => 'form-control']) !!}
+                  </div>
 
                   {!! Form::submit('Update Class', ['class' => 'btn btn-primary']) !!}
 

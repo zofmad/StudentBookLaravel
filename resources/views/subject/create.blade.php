@@ -40,6 +40,10 @@
                       {!! Form::label('teacher', 'Teacher:', ['class' => 'control-label']) !!}
                       {!! Form::select('teacher_id', ["Select teacher", "teachers" => $teachers], null, ['class' => 'form-control']) !!}
                   </div>
+                  <div class="form-group">
+                    {!! Form::label('classrooms', 'Assign to classes:(Ctrl+click)', ['class' => 'control-label']) !!}
+                    {!! Form::select('classroom_ids[]', $classrooms, null, ['multiple'=>'multiple', 'class' => 'form-control']) !!}
+                  </div>
 
                   {!! Form::submit("Create subject", ['class' => 'btn btn-primary']) !!}
                   <a href="{{ route('subjects.index') }}" class="btn btn-info">Back to all subjects</a>

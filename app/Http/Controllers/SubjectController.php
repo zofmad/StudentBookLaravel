@@ -1,11 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Classroom;
 
 use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+
 class SubjectController extends Controller
 {
     /**
@@ -37,7 +41,11 @@ class SubjectController extends Controller
         }
 
         $teachers = array_pluck($teachers, 'email', 'id');
-        return view('subject.create')->withTeachers($teachers);
+        
+        $classrooms = Classroom::all();
+        $classrooms = array_pluck($classrooms, 'name', 'id');
+
+        return view('subject.create')->withTeachers($teachers)->withClassrooms($classrooms);
     }
 
     /**
@@ -57,6 +65,13 @@ class SubjectController extends Controller
       $newSubject = $request->all();
 
       $subject = Subject::create($newSubject);
+      if($request->input('classroom_ids')){
+          foreach($request->input('classroom_ids') as $classroomId){
+            DB::table('classroom_subject')->insert([
+                ['subject_id' => $subject->id, 'classroom_id' => $classroomId]
+            ]);
+          }  
+      }
 
       return redirect()->back()
       ->with('flash_message', 'New subject '.$subject['name'].' successfully added!');
@@ -74,7 +89,15 @@ class SubjectController extends Controller
       $subjectId = $subject->id;
       $subject = Subject::findOrFail($subjectId);
       $teacher = User::where('id', '=', $subject->teacher_id)->first();
-      return view('subject.show', ['subject' => $subject, 'teacher' => $teacher]);
+      
+      $classroomIds = DB::table('classroom_subject')
+                     ->select('classroom_id')
+                     ->where('subject_id', '=', $subject->id)
+                     ->get();
+      $classroomIds = array_pluck($classroomIds, 'classroom_id');
+      $classrooms = Classroom::find($classroomIds);
+      
+      return view('subject.show', ['subject' => $subject, 'teacher' => $teacher])->withClassrooms($classrooms);
     }
 
     /**

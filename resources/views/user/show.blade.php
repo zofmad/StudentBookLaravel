@@ -33,6 +33,15 @@
                   @if($role == 'Student')
                     <p class="lead"> Class: <a href="{{ route('classrooms.show', $class) }}">{{$class->name}}</a> </p>
                   @endif
+                  @if($role == 'Teacher')
+                    <p class="lead"> Subjects:
+                        <ul>
+                        @foreach($subjects as $subject)
+                            <li><a href="{{ route('subjects.show', $subject) }}">{{$subject->name}}</a></li>
+                        @endforeach
+                        </ul>
+                    </p>
+                  @endif
                   <a href="{{ route('user.changePassword.role', ['role' => $role, 'user' => $user]) }}" class="pull-right btn" style="color: black">Change password</a>
                   <br>
 
