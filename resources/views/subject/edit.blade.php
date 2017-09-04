@@ -37,6 +37,14 @@
                       {!! Form::label('teacher', 'Teacher:', ['class' => 'control-label']) !!}
                       {!! Form::select('teacher_id', $teachers, null, ['class' => 'form-control']) !!}
                   </div>
+                  <div class="form-group">
+                    {!! Form::label('classrooms_add', 'Assign subject to classes:(Ctrl+click)', ['class' => 'control-label']) !!}
+                    {!! Form::select('classroom_add_ids[]', $classroomsAdd, null, ['multiple'=>'multiple', 'class' => 'form-control']) !!}
+                  </div>
+                  <div class="form-group">
+                    {!! Form::label('classrooms_remove', 'Remove subject from classes:(Ctrl+click)', ['class' => 'control-label']) !!}
+                    {!! Form::select('classroom_remove_ids[]', $classroomsRemove, null, ['multiple'=>'multiple', 'class' => 'form-control']) !!}
+                  </div>
 
 
 

@@ -41,7 +41,7 @@ class SubjectController extends Controller
         }
 
         $teachers = array_pluck($teachers, 'email', 'id');
-        
+
         $classrooms = Classroom::all();
         $classrooms = array_pluck($classrooms, 'name', 'id');
 
@@ -70,7 +70,7 @@ class SubjectController extends Controller
             DB::table('classroom_subject')->insert([
                 ['subject_id' => $subject->id, 'classroom_id' => $classroomId]
             ]);
-          }  
+          }
       }
 
       return redirect()->back()
@@ -89,14 +89,14 @@ class SubjectController extends Controller
       $subjectId = $subject->id;
       $subject = Subject::findOrFail($subjectId);
       $teacher = User::where('id', '=', $subject->teacher_id)->first();
-      
+
       $classroomIds = DB::table('classroom_subject')
                      ->select('classroom_id')
                      ->where('subject_id', '=', $subject->id)
                      ->get();
       $classroomIds = array_pluck($classroomIds, 'classroom_id');
       $classrooms = Classroom::find($classroomIds);
-      
+
       return view('subject.show', ['subject' => $subject, 'teacher' => $teacher])->withClassrooms($classrooms);
     }
 
@@ -118,8 +118,20 @@ class SubjectController extends Controller
         }
       }
 
+      $classroomRemoveIds = DB::table('classroom_subject')
+                   ->select('classroom_id')
+                   ->where('subject_id', '=', $subject->id)
+                   ->get();
+      $classroomRemoveIds = array_pluck($classroomRemoveIds, 'classroom_id');
+      $classroomsRemove = Classroom::find($classroomRemoveIds);
+      $classroomsRemove = array_pluck($classroomsRemove, 'name', 'id');
+
+
+      $classroomsAdd = Classroom::whereNotIn('id', $classroomRemoveIds)->get();
+      $classroomsAdd = array_pluck($classroomsAdd, 'name', 'id');
+
       $teachers = array_pluck($teachers, 'email', 'id');
-      return view('subject.edit')->withSubject($subject)->withTeachers($teachers);
+      return view('subject.edit', ['classroomsAdd' => $classroomsAdd, 'classroomsRemove' => $classroomsRemove])->withSubject($subject)->withTeachers($teachers);
     }
 
     /**
@@ -140,8 +152,23 @@ class SubjectController extends Controller
       ]
         ]);
 
-      if($request->input('name') == $subject->name && $request->input('teacher_id') == $subject->teacher_id){
+      if($request->input('name') == $subject->name && $request->input('teacher_id') == $subject->teacher_id
+        && !$request->input('classroom_remove_ids') && !$request->input('classroom_add_ids')){
         return redirect()->back()->with('warning_message', "You didn't change any data.");
+      }
+      if($request->input('classroom_remove_ids')){
+
+          foreach($request->input('classroom_remove_ids') as $classroomRemoveId){
+              DB::table('classroom_subject')->where('subject_id', '=', $subject->id)
+                      ->where('classroom_id', '=', $classroomRemoveId)->delete();
+          }
+      }
+      if($request->input('classroom_add_ids')){
+          foreach($request->input('classroom_add_ids') as $classroomAddId){
+              DB::table('classroom_subject')->insert([
+                  ['subject_id' => $subject->id, 'classroom_id' => $classroomAddId]
+              ]);
+          }
       }
       $updatedSubject = $request->all();
       $subject->fill($updatedSubject)->save();
