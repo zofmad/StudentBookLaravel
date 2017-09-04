@@ -28,7 +28,22 @@
                   <p class="lead"> For subject: <a href="{{ route('subjects.show', $subject) }}">{{$subject->name}}</a></p>
                   <p class="lead"> Added by: <a href="{{ route('user.show.role', ['role' => 'Teacher', 'user' => $teacher]) }}">{{$teacher->name}}</a></p>
                   <hr>
-                  <a href="{{ route('grades.index') }}" class="btn btn-info">Back to all grades</a>
+                  @permission('see-all-grades')
+                    <a href="{{ route('grades.index') }}" class="btn btn-info">Back to all grades</a>
+                  @endpermission
+                  @permission('insert/update-grade-for-subject')
+                    <a href="{{ route('grades.list.teacher') }}" class="btn btn-info">Back to Your grades</a>
+                    <a href="{{ route('grades.edit', $grade) }}" class="btn btn-primary">Edit grade</a>
+                    <div class="pull-right">
+                      {!! Form::open([
+                          'method' => 'DELETE',
+                          'route' => ['grades.destroy', $grade]
+                      ]) !!}
+                          {!! Form::submit("Delete grade", ['class' => 'btn btn-danger']) !!}
+                      {!! Form::close() !!}
+                    </div>
+                  @endpermission
+
 
                 </div>
             </div>

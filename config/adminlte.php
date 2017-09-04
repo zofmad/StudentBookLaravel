@@ -171,13 +171,13 @@ return [
         ],
         [
             'text'       => 'Your subjects',
-            'url'  => 'admin/settings',
+            'url'  => 'subject/teacher/list',
             'icon_color' => 'yellow',
             'can' => 'see-subjects-for-teacher',
         ],
         [
             'text'       => 'Your grades',
-            'url'  => 'admin/settings',
+            'url'  => 'grade/teacher/list',
             'icon_color' => 'yellow',
             'can' => 'see-grades-for-teacher',
         ],

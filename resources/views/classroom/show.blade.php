@@ -40,18 +40,20 @@
                   @endforeach
                   </ul>
                   </p>
-                  
+
                   <hr>
-                  <a href="{{ route('classrooms.index') }}" class="btn btn-info">Back to all classes</a>
-                  <a href="{{ route('classrooms.edit', $classroom) }}" class="btn btn-primary">Edit class</a>
-                  <div class="pull-right">
-                    {!! Form::open([
-                        'method' => 'DELETE',
-                        'route' => ['classrooms.destroy', $classroom]
-                    ]) !!}
-                        {!! Form::submit("Delete class", ['class' => 'btn btn-danger']) !!}
-                    {!! Form::close() !!}
-                  </div>
+                  @permission('classes-CRUD')
+                    <a href="{{ route('classrooms.index') }}" class="btn btn-info">Back to all classes</a>
+                    <a href="{{ route('classrooms.edit', $classroom) }}" class="btn btn-primary">Edit class</a>
+                    <div class="pull-right">
+                      {!! Form::open([
+                          'method' => 'DELETE',
+                          'route' => ['classrooms.destroy', $classroom]
+                      ]) !!}
+                          {!! Form::submit("Delete class", ['class' => 'btn btn-danger']) !!}
+                      {!! Form::close() !!}
+                    </div>
+                  @endpermission
                 </div>
             </div>
         </div>

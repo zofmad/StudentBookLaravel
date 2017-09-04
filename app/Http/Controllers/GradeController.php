@@ -17,9 +17,45 @@ class GradeController extends Controller
     public function index()
     {
       $grades = Grade::all();
-      return view('grade.list')->withGrades($grades);
-    }
+      $users = User::all();
+      $students = [];
+      foreach($users as $user){
+        if($user->hasRole('Student')){
+          $students[$user->id] = $user;
+        }
+      }
 
+
+
+      return view('grade.list')->withGrades($grades)->withStudents($students);
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexForTeacher()
+    {
+      if(\Auth::user()->can('see-grades-for-teacher')){
+        $teacherId = \Auth::user()->id;
+        $subjects = Subject::where('teacher_id', "=", $teacherId)->get();
+        $subjectsIds = array_pluck($subjects, 'id');
+        $grades = Grade::whereIn('subject_id', $subjectsIds)->get();
+        $users = User::all();
+        $students = [];
+        foreach($users as $user){
+          if($user->hasRole('Student')){
+            $students[$user->id] = $user;
+          }
+        }
+
+
+          return view('subject.listTeacher')->withGrades($grades)->withStudents($students);
+
+
+
+      }
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -27,16 +63,34 @@ class GradeController extends Controller
      */
     public function create()
     {
-      // $users = User::all();
-      // $teachers = [];
-      // foreach($users as $user){
-      //   if($user->hasRole('Teacher')){
-      //     $teachers[] = $user;
-      //   }
-      // }
+
       //
-      // $teachers = array_pluck($teachers, 'email', 'id');
-      // return view('grade.create')->withTeachers($teachers);
+
+
+      if(\Auth::user()->can('insert/update-grade-for-subject')){
+        $teacherId = \Auth::user()->id;
+        $subjects = Subject::where('teacher_id', "=", $teacherId)->get();
+        $subjectsIds = array_pluck($subjects, 'id');
+
+        $classroomIds= DB::table('classroom_subject')
+                     ->select('classroom_id')
+                     ->whereIn('subject_id', $subjectsIds)
+                     ->get();
+
+
+        $students = User::where('usertable_type', '=', 'class')->whereIn('usertable_id', $classroomIds);
+        $students = [];
+        foreach($users as $user){
+          if($user->hasRole('Student')){
+            $students[] = $user;
+          }
+        }
+        $students = array_pluck($students, 'name', 'id');
+        return view('grade.create')->withStudents($students);
+
+      }
+
+
     }
 
     /**

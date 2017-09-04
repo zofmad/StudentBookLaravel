@@ -24,6 +24,38 @@ class SubjectController extends Controller
 
       return view('subject.list')->withSubjects($subjects);
     }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexForTeacher()
+    {
+      if(\Auth::user()->can('see-subjects-for-teacher')){
+        $teacherId = \Auth::user()->id;
+        $subjects = Subject::where('teacher_id', "=", $teacherId)->get();
+        $subjectsIds = array_pluck($subjects, 'id');
+        $classroomSubjectTable = [];
+        $classroomSubjectIdTable = DB::table('classroom_subject')
+                     ->select('classroom_id', 'subject_id')
+                     ->whereIn('subject_id', $subjectsIds)
+                     ->get();
+
+        foreach($classroomSubjectIdTable as $classSub){
+          $class = Classroom::find($classSub->classroom_id);
+          $subject = Subject::find($classSub->subject_id);
+
+          $classroomSubjectTable[$class->name][$subject->name] = $subject;
+          }
+
+
+          return view('subject.listTeacher', ['classroomSubjectTable' => $classroomSubjectTable]);
+
+
+
+      }
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -44,6 +76,7 @@ class SubjectController extends Controller
 
         $classrooms = Classroom::all();
         $classrooms = array_pluck($classrooms, 'name', 'id');
+
 
         return view('subject.create')->withTeachers($teachers)->withClassrooms($classrooms);
     }

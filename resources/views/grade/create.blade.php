@@ -8,7 +8,7 @@
 @section('title', 'StudentBook')
 
 @section('content_header')
-    <h1>Add a New Class</h1>
+    <h1>Add a New subject</h1>
 @stop
 
 
@@ -22,53 +22,34 @@
 
 
 
-                <div class="panel-heading lead">Enter the personal details of a new {{$role}} below.</div>
+                <div class="panel-heading lead">Enter the details of a new subject below.</div>
 
                 <div class="panel-body">
 
 
 
                   {!! Form::open([
-                      'route' => 'user.store'
+                      'route' => 'grades.store'
                   ]) !!}
 
                   <div class="form-group">
                       {!! Form::label('name', 'Name:', ['class' => 'control-label']) !!}
                       {!! Form::text('name', null, ['class' => 'form-control']) !!}
                   </div>
-
                   <div class="form-group">
-                      {!! Form::label('email', 'Email:', ['class' => 'control-label']) !!}
-                      {!! Form::email('email', null, ['class' => 'form-control']) !!}
-
+                      {!! Form::label('subject', 'Subject:', ['class' => 'control-label']) !!}
+                      {!! Form::select('subject_id', ["Select subjects", "subjects" => $subjects], null, ['class' => 'form-control']) !!}
+                  </div>
+                  <div class="form-group">
+                      {!! Form::label('student', 'Student:', ['class' => 'control-label']) !!}
+                      {!! Form::select('student_id', ["Select student", "students" => $students], null, ['class' => 'form-control']) !!}
                   </div>
 
-                  <div class="form-group">
-                    <?php
-                    // include 'Text/Password.php';
-                    // $tp = new Text_Password();
-                    // $pass = $tp->create(10).rand(0,1000);
+                  {!! Form::submit("Create grade", ['class' => 'btn btn-primary']) !!}
 
-                    //narazie bez sprawdzania sily hasla
-                    $genPass = str_random(10);
-                    $hashedGenPass = Hash::make("$genPass");
-
-
-                    ?>
-
-
-                      {!! Form::label('password', "Generated password: $genPass", ['class' => 'control-label']) !!}
-                      {!! Form::hidden('password', $hashedGenPass) !!}
-                      {!! Form::hidden('role', $role) !!}
-
-
-                  </div>
-
-
-                  {!! Form::submit("Create $role", ['class' => 'btn btn-primary']) !!}
 
                   {!! Form::close() !!}
-
+                  <a href="{{ route('grades.list.teacher') }}" class="btn btn-info">Back to Your grades</a>
 
 
 
@@ -77,9 +58,6 @@
         </div>
     </div>
 </div>
-<!-- <h1>Add a New Task</h1>
-<p class="lead">Add to your user list below.</p>
-<hr> -->
 
 
 

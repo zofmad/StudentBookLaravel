@@ -35,17 +35,21 @@
 
 
                   <hr>
-                  <a href="{{ route('subjects.index') }}" class="btn btn-info">Back to all subjects</a>
-                  <a href="{{ route('subjects.edit', $subject) }}" class="btn btn-primary">Edit subject</a>
-                  <div class="pull-right">
-                    {!! Form::open([
-                        'method' => 'DELETE',
-                        'route' => ['subjects.destroy', $subject]
-                    ]) !!}
-                        {!! Form::submit("Delete subject", ['class' => 'btn btn-danger']) !!}
-                    {!! Form::close() !!}
-                  </div>
-                </div>
+                  @permission('see-subjects-for-teacher')
+                    <a href="{{ route('subjects.list.teacher') }}" class="btn btn-info">Back to Your subjects</a>
+                  @endpermission
+                  @permission('subjects-CRUD')
+                    <a href="{{ route('subjects.index') }}" class="btn btn-info">Back to all subjects</a>
+                    <a href="{{ route('subjects.edit', $subject) }}" class="btn btn-primary">Edit subject</a>
+                    <div class="pull-right">
+                      {!! Form::open([
+                          'method' => 'DELETE',
+                          'route' => ['subjects.destroy', $subject]
+                      ]) !!}
+                          {!! Form::submit("Delete subject", ['class' => 'btn btn-danger']) !!}
+                      {!! Form::close() !!}
+                    </div>
+                  @endpermission
             </div>
         </div>
     </div>
