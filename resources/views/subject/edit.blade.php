@@ -48,6 +48,7 @@
 
 
 
+
                   {!! Form::submit('Update subject', ['class' => 'btn btn-primary']) !!}
 
                   {!! Form::close() !!}

@@ -19,9 +19,9 @@ class CreateGradesHistoryTable extends Migration
             $table->integer('teacher_id')->unsigned();
 
             $table->foreign('grade_id')->references('id')->on('grades')
-                ->onUpdate('cascade')->onDelete('no action');
+                ->onUpdate('cascade')->onDelete('set null');
             $table->foreign('teacher_id')->references('id')->on('users')
-                ->onUpdate('cascade')->onDelete('no action');
+                ->onUpdate('cascade')->onDelete('cascade');
 
             $table->string('note')->nullable();
 

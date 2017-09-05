@@ -50,8 +50,7 @@ class GradeController extends Controller
         }
 
 
-          return view('subject.listTeacher')->withGrades($grades)->withStudents($students);
-
+        return view('grade.listTeacher')->withGrades($grades)->withStudents($students);
 
 
       }
@@ -64,21 +63,22 @@ class GradeController extends Controller
     public function create()
     {
 
-      //
+
 
 
       if(\Auth::user()->can('insert/update-grade-for-subject')){
         $teacherId = \Auth::user()->id;
         $subjects = Subject::where('teacher_id', "=", $teacherId)->get();
         $subjectsIds = array_pluck($subjects, 'id');
-
-        $classroomIds= DB::table('classroom_subject')
+        $subjects = array_pluck($subjects, 'name', 'id');
+        $classroomIds= \DB::table('classroom_subject')
                      ->select('classroom_id')
                      ->whereIn('subject_id', $subjectsIds)
                      ->get();
 
+        $classroomIds = array_pluck($classroomIds, 'classroom_id');
 
-        $students = User::where('usertable_type', '=', 'class')->whereIn('usertable_id', $classroomIds);
+        $users = User::where('usertable_type', '=', 'class')->whereIn('usertable_id', $classroomIds)->get();
         $students = [];
         foreach($users as $user){
           if($user->hasRole('Student')){
@@ -86,7 +86,10 @@ class GradeController extends Controller
           }
         }
         $students = array_pluck($students, 'name', 'id');
-        return view('grade.create')->withStudents($students);
+
+        $grades = range(1,6);
+        array_unshift($grades, "Select grade");
+        return view('grade.create', ['grades' => $grades])->withStudents($students)->withSubjects($subjects);
 
       }
 
@@ -101,18 +104,49 @@ class GradeController extends Controller
      */
     public function store(Request $request)
     {
-      //     // dd($request);
-      // $this->validate($request, [
-      //   'name' => 'required|unique:grades',
-      //   'teacher_id' => ['required',
-      //   Rule::notIn(['0'])],
-      // ]);
-      // $newGrade = $request->all();
-      //
-      // $grade = Grade::create($newGrade);
-      //
-      // return redirect()->back()
-      // ->with('flash_message', 'New grade '.$grade['name'].' successfully added!');
+
+
+      $this->validate($request, [
+        'student_id' => 'required|numeric|min:1',
+        'subject_id' => 'required|numeric|min:1',
+        'value' => 'required|numeric|min:1|max:11',
+      ]);
+
+      $classroomId = \DB::table('users')
+                   ->select('usertable_id')
+                   ->where('id', $request->input('student_id'))
+                   ->first()->usertable_id;
+
+      $subjectIds = \DB::table('classroom_subject')
+                   ->select('subject_id')
+                   ->where('classroom_id', $classroomId)
+                   ->get();
+
+
+      $subjectIds = array_pluck($subjectIds, 'subject_id');
+      $studentName = User::find($request->input('student_id'))->name;
+      if(!in_array($request->input('subject_id'), $subjectIds)){
+        return redirect()->back()->with('warning_message', "Student $studentName is not enrolled in chosen subject. Try again");
+      }
+
+      $newGrade = $request->all();
+
+      $grade = Grade::create($newGrade);
+
+
+      if(\Auth::user()->hasRole('Teacher')){
+
+        \DB::table('grades_history')->insert([
+            ['grade_id' => $grade->id, 'teacher_id' => \Auth::user()->id,
+            'note' => $grade->note, 'value_new' => $request->input('value'),
+            'action' => 'insert grade', 'created_at' => date("Y-m-d H:i:s")]
+        ]);
+      }
+
+
+
+      return redirect()->back()
+      ->with('flash_message', 'New grade:'.$grade['value'].' for student '.$studentName.' successfully added!');
     }
 
     /**
@@ -141,8 +175,8 @@ class GradeController extends Controller
      */
     public function edit(Grade $grade)
     {
-      // $gradeId = $grade->id;
-      // $grade = Grade::findorFail($gradeId);
+      $gradeId = $grade->id;
+      $grade = Grade::findorFail($gradeId);
       // $users = User::all();
       // $teachers = [];
       // foreach($users as $user){
@@ -152,7 +186,35 @@ class GradeController extends Controller
       // }
       //
       // $teachers = array_pluck($teachers, 'email', 'id');
-      // return view('grade.edit')->withGrade($grade)->withTeachers($teachers);
+
+      if(\Auth::user()->can('insert/update-grade-for-subject')){
+        $teacherId = \Auth::user()->id;
+        $subjects = Subject::where('teacher_id', "=", $teacherId)->get();
+        $subjectsIds = array_pluck($subjects, 'id');
+        $subjects = array_pluck($subjects, 'name', 'id');
+        $classroomIds= \DB::table('classroom_subject')
+                     ->select('classroom_id')
+                     ->whereIn('subject_id', $subjectsIds)
+                     ->get();
+
+        $classroomIds = array_pluck($classroomIds, 'classroom_id');
+
+        $users = User::where('usertable_type', '=', 'class')->whereIn('usertable_id', $classroomIds)->get();
+        $students = [];
+        foreach($users as $user){
+          if($user->hasRole('Student')){
+            $students[] = $user;
+          }
+        }
+        $students = array_pluck($students, 'name', 'id');
+
+        $grades = range(1,6);
+        array_unshift($grades, "Select grade");
+
+        return view('grade.edit', ['grades' => $grades])->withGrade($grade);
+
+      }
+
     }
 
     /**
@@ -164,21 +226,32 @@ class GradeController extends Controller
      */
     public function update(Request $request, Grade $grade)
     {
-      // $gradeId = $grade->id;
-      // $grade = Grade::findorFail($gradeId);
-      // $this->validate($request, [
-      //   'teacher_id' => 'required|numeric',
-      //   'name' => ['required',
-      //     Rule::unique('grades')->ignore($grade->id),
-      // ]
-      //   ]);
-      //
-      // if($request->input('name') == $grade->name && $request->input('teacher_id') == $grade->teacher_id){
-      //   return redirect()->back()->with('warning_message', "You didn't change any data.");
-      // }
-      // $updatedGrade = $request->all();
-      // $grade->fill($updatedGrade)->save();
-      // return redirect()->back()->with('flash_message', "Grade successfully updated!");
+
+      $gradeId = $grade->id;
+      $grade = Grade::findorFail($gradeId);
+
+      $this->validate($request, [
+        'student_id' => 'required|numeric|min:1',
+        'subject_id' => 'required|numeric|min:1',
+        'value' => 'required|numeric|min:1|max:6',
+      ]);
+      if($request->input('value') == $grade->value && $request->input('note') == $grade->note){
+        return redirect()->back()->with('warning_message', "You didn't change any data.");
+      }
+
+      $updatedGrade = $request->all();
+
+      if(\Auth::user()->hasRole('Teacher')){
+
+        \DB::table('grades_history')->insert([
+            ['grade_id' => $grade->id, 'teacher_id' => \Auth::user()->id,
+            'note' => $request->input('note'), 'value_old' => $grade->value, 'value_new' => $request->input('value'),
+            'action' => 'change grade', 'created_at' => date("Y-m-d H:i:s")]
+        ]);
+      }
+      $grade->fill($updatedGrade)->save();
+
+      return redirect()->back()->with('flash_message', "Grade successfully updated!");
     }
 
     /**
@@ -189,10 +262,12 @@ class GradeController extends Controller
      */
     public function destroy(Grade $grade)
     {
-      // $gradeId = $grade->id;
-      // $grade = Grade::findOrFail($gradeId);
-      // $grade->delete();
-      // return redirect()->route('grades.index')
-      //   ->with('flash_message', "Grade successfully deleted!");
-    }
+      $gradeId = $grade->id;
+      $grade = Grade::findOrFail($gradeId);
+      $grade->delete();
+      return redirect()->route('grades.index')
+        ->with('flash_message', "Grade successfully deleted!");
+
+  }
+  
 }

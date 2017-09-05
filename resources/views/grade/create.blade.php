@@ -33,8 +33,12 @@
                   ]) !!}
 
                   <div class="form-group">
-                      {!! Form::label('name', 'Name:', ['class' => 'control-label']) !!}
-                      {!! Form::text('name', null, ['class' => 'form-control']) !!}
+                      {!! Form::label('value', 'Grade:', ['class' => 'control-label']) !!}
+                      {!! Form::select('value', $grades, null, ['class' => 'form-control']) !!}
+                  </div>
+                  <div class="form-group">
+                      {!! Form::label('note', 'Note:', ['class' => 'control-label']) !!}
+                      {!! Form::text('note', null, ['class' => 'form-control']) !!}
                   </div>
                   <div class="form-group">
                       {!! Form::label('subject', 'Subject:', ['class' => 'control-label']) !!}
@@ -49,6 +53,9 @@
 
 
                   {!! Form::close() !!}
+
+
+                  <hr>
                   <a href="{{ route('grades.list.teacher') }}" class="btn btn-info">Back to Your grades</a>
 
 

@@ -20,18 +20,17 @@
                 <div class="panel-body">
                   @foreach($grades as $grade)
 
-                    <h3>Student:<a href="{{ route('user.show.role', ['user' => $students[$grade->student_id], 'role' => 'Student']) }}" class="btn btn-info">{{ $students[$grade->student_id]->name }}</a></h3>
+                    <h3>Student: <a href="{{ route('user.show.role', ['user' => $students[$grade->student_id], 'role' => 'Student']) }}">{{ $students[$grade->student_id]->name }}</a></h3>
 
-                    <p>{{$grade->value}}</p>
+                    <h3 style = "color: red">{{$grade->value}}</h3>
                     <p>
                         <a href="{{ route('grades.show', $grade) }}" class="btn btn-info">View grade</a>
-                        <a href="{{ route('grades.edit', ['grade' => $grade]) }}" class="btn btn-primary">Edit grade</a>
-                    </p>
+
                     <hr>
                   @endforeach
                 </div>
 
-                <a href="{{ route('grades.create') }}" class="btn btn-primary">Add new grade</a>
+
 
 
 

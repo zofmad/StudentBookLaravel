@@ -20,9 +20,9 @@
                 <div class="panel-body">
                   @foreach($grades as $grade)
 
-                    <h3>Student: {{$student[$grade->student_id]->name}}</h3>
+                    <h3>Student: {{$students[$grade->student_id]->name}}</h3>
 
-                    <p>{{$grade->value}}</p>
+                    <h3 style = "color: red">{{$grade->value}}</h3>
                     <p>
                         <a href="{{ route('grades.show', $grade) }}" class="btn btn-info">View grade</a>
                         <a href="{{ route('grades.edit', ['grade' => $grade]) }}" class="btn btn-primary">Edit grade</a>
