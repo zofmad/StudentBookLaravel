@@ -18,20 +18,20 @@
                 <div class="panel-heading lead">List of Your grades:</div>
 
                 <div class="panel-body">
-                  @foreach($grades as $grade)
+                  @foreach($gradesSubjectsArray as $subjectId => $grades)
 
-                    <h3>Student: {{$students[$grade->student_id]->name}}</h3>
 
-                    <h3 style = "color: red">{{$grade->value}}</h3>
-                    <p>
-                        <a href="{{ route('grades.show', $grade) }}" class="btn btn-info">View grade</a>
-                        <a href="{{ route('grades.edit', ['grade' => $grade]) }}" class="btn btn-primary">Edit grade</a>
-                    </p>
+                    <h3>Subject: <a href="{{ route('subjects.show', $subjectsArray[$subjectId]) }}">{{$subjectsArray[$subjectId]->name}}</h3>
+                    <ul>
+                    @foreach($grades as $grade)
+                      <li><a href="{{ route('grades.show', $grade) }}">{{$grade->value}}</a></li>
+                    @endforeach
+                    </ul>
+
+
                     <hr>
                   @endforeach
                 </div>
-
-                <a href="{{ route('grades.create') }}" class="btn btn-primary">Add new grade</a>
 
 
 

@@ -196,7 +196,7 @@ return [
         ],
         [
             'text'       => 'Your grades',
-            'url'  => 'admin/settings',
+            'url'  => 'grade/student/list',
             'icon_color' => 'yellow',
             'can' => 'see-grades-for-student',
         ],

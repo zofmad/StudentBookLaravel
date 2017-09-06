@@ -50,6 +50,9 @@
                   @permission('see-all-grades')
                     <a href="{{ route('grades.index') }}" class="btn btn-info">Back to all grades</a>
                   @endpermission
+                  @permission('see-grades-for-student')
+                    <a href="{{ route('grades.list.student') }}" class="btn btn-info">Back to Your grades</a>
+                  @endpermission
                   @permission('insert/update-grade-for-subject')
                     <a href="{{ route('grades.list.teacher') }}" class="btn btn-info">Back to Your grades</a>
                     <a href="{{ route('grades.edit', $grade) }}" class="btn btn-primary">Edit grade</a>

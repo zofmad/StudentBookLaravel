@@ -55,3 +55,4 @@ Route::get('user/changePassword/{role?}/{user?}', 'UserController@changePassword
  Route::get('subject/teacher/list', 'SubjectController@indexForTeacher')->name('subjects.list.teacher');
  Route::get('grade/teacher/list', 'GradeController@indexForTeacher')->name('grades.list.teacher');
   Route::get('gradesHistory/teacher', 'GradeController@showGradesHistoryForTeacher')->name('grades.history.teacher');
+  Route::get('grade/student/list', 'GradeController@showGradesForstudent')->name('grades.list.student');

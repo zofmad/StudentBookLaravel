@@ -317,6 +317,27 @@ class GradeController extends Controller
 
 
       }
+      public function showGradesForstudent()
+      {
+        if(\Auth::user()->can('see-grades-for-student')){
+          $grades = Grade::where('student_id', '=', \Auth::user()->id)->get();
+          foreach($grades as $grade){
+            $gradesSubjectsArray[$grade->subject_id][]= $grade;
+          }
+
+
+          $subjects = Subject::all();
+
+          foreach($subjects as $subject){
+            $subjectsArray[$subject->id] = $subject;
+          }
+
+          return view('grade.listStudent',
+          ['gradesSubjectsArray' => $gradesSubjectsArray, 'subjectsArray' => $subjectsArray]);
+        }
+
+
+      }
 
 
 
