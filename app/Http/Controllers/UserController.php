@@ -100,7 +100,7 @@ class UserController extends Controller
             $subject->save();
 
           }
-      
+
       }
 
 
@@ -143,10 +143,10 @@ class UserController extends Controller
       if($role == "Teacher"){
           $subjects = Subject::where('teacher_id', '=', $user->id)->get();
 //          $subjects = array_pluck($subjects, 'name', "id");
-          
+
       }
-      
-      
+
+
       return view('user.show', ['user' => $user, 'class' => $class, "subjects" => $subjects])->withRole($role);
     }
 

@@ -13,11 +13,17 @@ class CreateGradesHistoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('grades_history', function (Blueprint $table) {
+        Schema::create('grades_histories', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('grade_id')->unsigned();
+            $table->integer('grade_id')->unsigned()->nullable();
             $table->integer('teacher_id')->unsigned();
+            $table->integer('student_id')->unsigned()->nullable();
+            $table->integer('subject_id')->unsigned()->nullable();
 
+            $table->foreign('student_id')->references('id')->on('users')
+                ->onUpdate('cascade')->onDelete('set null');
+            $table->foreign('subject_id')->references('id')->on('subjects')
+                ->onUpdate('cascade')->onDelete('set null');
             $table->foreign('grade_id')->references('id')->on('grades')
                 ->onUpdate('cascade')->onDelete('set null');
             $table->foreign('teacher_id')->references('id')->on('users')
@@ -40,6 +46,6 @@ class CreateGradesHistoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('grades_history');
+        Schema::dropIfExists('grades_histories');
     }
 }

@@ -23,10 +23,29 @@
                 <div class="panel-body">
                   <p class="lead"> Grade value: {{$grade->value}} </p>
                   <p class="lead"> Note: {{$grade->note}} </p>
-                  <p class="lead"> Date: {{$grade->created_at}} </p>
+                  <p class="lead"> Creation date: {{$grade->created_at}} </p>
                   <p class="lead"> For student: <a href="{{ route('user.show.role', ['role' => 'Student', 'user' => $student]) }}">{{$student->name}}</a></p>
                   <p class="lead"> For subject: <a href="{{ route('subjects.show', $subject) }}">{{$subject->name}}</a></p>
                   <p class="lead"> Added by: <a href="{{ route('user.show.role', ['role' => 'Teacher', 'user' => $teacher]) }}">{{$teacher->name}}</a></p>
+                  @permission('see-history-of-changes-for-teacher')
+                    <p class="lead"> History of changes:
+                      <ol>
+                      @foreach($historyOfChanges as $change)
+                        <li><b>{{$change->action}}:</b>
+                          @if ($change->action == "insert grade")
+                            Value: {{$change->value_new}};
+                          @else
+                            Old value: {{$change->value_old}};
+                            New value: {{$change->value_new}};
+                          @endif
+                          Notes: {{$change->note}};
+                          Date of change: {{$change->created_at}};
+                        </li>
+                      @endforeach
+                      </ol>
+                    </p>
+                  @endpermission
+
                   <hr>
                   @permission('see-all-grades')
                     <a href="{{ route('grades.index') }}" class="btn btn-info">Back to all grades</a>
@@ -43,6 +62,7 @@
                       {!! Form::close() !!}
                     </div>
                   @endpermission
+
 
 
                 </div>

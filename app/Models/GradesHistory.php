@@ -12,7 +12,7 @@ class GradesHistory extends Model
      * @var array
      */
     protected $fillable = [
-        'grade_id', 'note', 'value_old', 'value_new', 'action', 'created_at'
+        'grade_id', 'student_id', 'subject_id', 'note', 'value_old', 'value_new', 'action', 'created_at'
     ];
 
     /**

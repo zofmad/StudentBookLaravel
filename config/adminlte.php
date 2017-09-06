@@ -183,7 +183,7 @@ return [
         ],
         [
             'text'       => 'History of grades changes',
-            'url'  => 'admin/settings',
+            'url'  => 'gradesHistory/teacher',
             'icon_color' => 'yellow',
             'can' => 'see-history-of-changes-for-teacher',
         ],

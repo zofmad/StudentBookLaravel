@@ -42,29 +42,35 @@
                         </ul>
                     </p>
                   @endif
-                  <a href="{{ route('user.changePassword.role', ['role' => $role, 'user' => $user]) }}" class="pull-right btn" style="color: black">Change password</a>
-                  <br>
+                  @permission('users-CRUD')
+                    <a href="{{ route('user.changePassword.role', ['role' => $role, 'user' => $user]) }}" class="pull-right btn" style="color: black">Change password</a>
+                    <br>
+                  @endpermission
 
                   <hr>
 
                   @if($role != "me" || \Entrust::hasRole('Director'))
                     @if($role != "me")
-                      <a href="{{ route('user.list.role', $role) }}" class="btn btn-info">Back to all {{$role}}s</a>
+                      @permission('users-CRUD')
+                        <a href="{{ route('user.list.role', $role) }}" class="btn btn-info">Back to all {{$role}}s</a>
+                      @endpermission
+
                     @endif
 
+                    @permission('users-CRUD')
+                      <a href="{{ route('user.edit.role', ['role' => $role, 'user' => $user]) }}" class="btn btn-primary">Edit profile</a>
 
-                    <a href="{{ route('user.edit.role', ['role' => $role, 'user' => $user]) }}" class="btn btn-primary">Edit profile</a>
-
-                    <div class="pull-right">
-                      {!! Form::open([
-                          'method' => 'DELETE',
-                          'route' => ['user.destroy', $user]
-                      ]) !!}
-                          {!! Form::hidden('role', $role) !!}
-                          {!! Form::submit("Delete $role", ['class' => 'btn btn-danger']) !!}
-                      {!! Form::close() !!}
-                    </div>
-
+                      <div class="pull-right">
+                        {!! Form::open([
+                            'method' => 'DELETE',
+                            'route' => ['user.destroy', $user]
+                        ]) !!}
+                            {!! Form::hidden('role', $role) !!}
+                            {!! Form::submit("Delete $role", ['class' => 'btn btn-danger']) !!}
+                        {!! Form::close() !!}
+                      </div>
+                    @endpermission
+                  
                   @endif
                 </div>
             </div>

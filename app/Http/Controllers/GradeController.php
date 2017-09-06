@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GradesHistory;
 use App\Models\Grade;
 use App\Models\Subject;
 use App\Models\User;
@@ -136,8 +137,9 @@ class GradeController extends Controller
 
       if(\Auth::user()->hasRole('Teacher')){
 
-        \DB::table('grades_history')->insert([
+        \DB::table('grades_histories')->insert([
             ['grade_id' => $grade->id, 'teacher_id' => \Auth::user()->id,
+            'student_id' => $grade->student_id, 'subject_id' => $grade->subject_id,
             'note' => $grade->note, 'value_new' => $request->input('value'),
             'action' => 'insert grade', 'created_at' => date("Y-m-d H:i:s")]
         ]);
@@ -162,8 +164,9 @@ class GradeController extends Controller
       $student = User::where('id', '=', $grade->student_id)->first();
       $subject = Subject::where('id', '=', $grade->subject_id)->first();
       $teacher = User::where('id', '=', $subject->teacher_id)->first();
+      $historyOfChanges = GradesHistory::where('grade_id', '=', $grade->id)->get();
 
-      return view('grade.show', ['grade' => $grade, 'student' => $student, 'subject' => $subject, 'teacher' => $teacher]);
+      return view('grade.show', ['historyOfChanges' => $historyOfChanges, 'grade' => $grade, 'student' => $student, 'subject' => $subject, 'teacher' => $teacher]);
     }
 
 
@@ -243,9 +246,10 @@ class GradeController extends Controller
 
       if(\Auth::user()->hasRole('Teacher')){
 
-        \DB::table('grades_history')->insert([
+        \DB::table('grades_histories')->insert([
             ['grade_id' => $grade->id, 'teacher_id' => \Auth::user()->id,
-            'note' => $request->input('note'), 'value_old' => $grade->value, 'value_new' => $request->input('value'),
+            'student_id' => $grade->student_id, 'subject_id' => $grade->subject_id,
+            'note' => $request->input('note').','.$grade->note, 'value_old' => $grade->value, 'value_new' => $request->input('value'),
             'action' => 'change grade', 'created_at' => date("Y-m-d H:i:s")]
         ]);
       }
@@ -264,10 +268,64 @@ class GradeController extends Controller
     {
       $gradeId = $grade->id;
       $grade = Grade::findOrFail($gradeId);
+      if(\Auth::user()->hasRole('Teacher')){
+
+        \DB::table('grades_histories')->insert([
+            ['grade_id' => $grade->id, 'teacher_id' => \Auth::user()->id,
+            'student_id' => $grade->student_id, 'subject_id' => $grade->subject_id,
+            'note' => $grade->note, 'value_old' => $grade->value, 'value_new' => 0,
+            'action' => 'delete grade', 'created_at' => date("Y-m-d H:i:s")]
+        ]);
+      }
       $grade->delete();
       return redirect()->route('grades.index')
         ->with('flash_message', "Grade successfully deleted!");
 
-  }
-  
+    }
+    /**
+     * Display the specified resource.
+     *
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showGradesHistoryForTeacher()
+    {
+      if(\Auth::user()->can('see-history-of-changes-for-teacher')){
+        $historyOfChanges = GradesHistory::where('teacher_id', '=', \Auth::user()->id)
+        ->orderBy('id', 'DESC')->get();
+        $teacher = User::find(\Auth::user()->id);
+        $users = User::all();
+        $studentsArray = [];
+        foreach($users as $user){
+          if($user->hasRole('Student')){
+            $studentsArray[$user->id] = $user;
+          }
+        }
+
+        $subjects = Subject::all();
+        $grades = Grade::all();
+        foreach($subjects as $subject){
+          $subjectsArray[$subject->id] = $subject;
+        }
+        foreach($grades as $grade){
+          $gradesArray[$grade->id] = $grade;
+        }
+        return view('grade.showHistoryForTeacher',
+        ['historyOfChanges' => $historyOfChanges, 'studentsArray' => $studentsArray,
+        'subjectsArray' => $subjectsArray, 'teacher' => $teacher, 'gradesArray' => $gradesArray]);
+        }
+
+
+      }
+
+
+
+
+
+
+
+
+
+
+
 }
