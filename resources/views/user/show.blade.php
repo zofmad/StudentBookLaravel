@@ -42,10 +42,10 @@
                         </ul>
                     </p>
                   @endif
-                  @permission('users-CRUD')
-                    <a href="{{ route('user.changePassword.role', ['role' => $role, 'user' => $user]) }}" class="pull-right btn" style="color: black">Change password</a>
-                    <br>
-                  @endpermission
+
+                  <a href="{{ route('user.changePassword.role', ['role' => $role, 'user' => $user]) }}" class="pull-right btn" style="color: black">Change password</a>
+                  <br>
+
 
                   <hr>
 
@@ -70,7 +70,7 @@
                         {!! Form::close() !!}
                       </div>
                     @endpermission
-                  
+
                   @endif
                 </div>
             </div>
