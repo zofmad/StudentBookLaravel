@@ -131,7 +131,7 @@ class ClassroomController extends Controller
         $subjectsAdd = Subject::whereNotIn('id', $subjectRemoveIds)->get();
         $subjectsAdd = array_pluck($subjectsAdd, 'name', 'id');
 
-      
+
         return view('classroom.edit', ['subjectsAdd' => $subjectsAdd, 'subjectsRemove' => $subjectsRemove])
                 ->withClassroom($classroom)->withStudents($students);
     }
@@ -189,6 +189,49 @@ class ClassroomController extends Controller
 
 
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Classroom  $classroom
+     * @return \Illuminate\Http\Response
+     */
+    public function showStatistics()
+    {
+      if(\Entrust::can('see-statistics')){
+        $nbOfGradesPerSubject = DB::table('grades')
+                       ->select(['subject_id', DB::raw('count(*)')])
+                       ->groupBy('subject_id')
+                       ->get();
+
+        $nbOfGradesPerSubjectArray = array_pluck($nbOfGradesPerSubject, 'subject_id', 'count(*)');
+
+        dd($nbOfGradesPerSubjectArray);
+        $subjects = Subject::all();
+        $subjects = array_pluck($subjects, 'name');
+
+        // $classroomId = $classroom->id;
+        // $classroom = Classroom::findOrFail($classroomId);
+        //
+        // $students = User::where("usertable_type", "=", "class")
+        //         ->where("usertable_id", "=", $classroom->id)->orderBy('name', 'asc')->get();
+        //
+        //
+        // $subjectIds = DB::table('classroom_subject')
+        //                ->select('subject_id')
+        //                ->where('classroom_id', '=', $classroom->id)
+        //                ->get();
+        // $subjectIds = array_pluck($subjectIds, 'subject_id');
+        // $subjects = Subject::find($subjectIds);
+        // return view('grade.statistics', ['classroom' => $classroom, 'subjects' => $subjects])->withStudents($students);
+
+
+
+
+      }
+
+    }
+
 
     /**
      * Remove the specified resource from storage.

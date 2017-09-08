@@ -22,7 +22,7 @@
                 <div class="panel-body">
                   @foreach($subjects as $subject)
                     <h3>{{ $subject->name }}</h3>
-                
+
                     <p>
                         <a href="{{ route('subjects.show', ['subject' => $subject]) }}" class="btn btn-info">View subject</a>
                         <a href="{{ route('subjects.edit', ['subject' => $subject]) }}" class="btn btn-primary">Edit subject</a>
@@ -37,7 +37,9 @@
 
                 </div>
                 <a href="{{ route('subjects.create') }}" class="btn btn-primary">Add new subject</a>
-
+                @permission('see-statistics')
+                  <a href="{{ route('subjects.statistics') }}" class="btn btn-info"><b>View statistics of grades per subject</a>
+                @endpermission
 
             </div>
         </div>

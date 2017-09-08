@@ -42,9 +42,9 @@
                 @permission('classes-CRUD')
                 <a href="{{ route('classrooms.create') }}" class="btn btn-primary">Add new class</a>
                 @endpermission
-                <br><br>
+
                 @permission('see-statistics')
-                <a href="{{ route('classrooms.create') }}" class="btn btn-info"><b>View statistics of grades per class</a>
+                <a href="{{ route('classrooms.statistics') }}" class="btn btn-info"><b>View statistics of grades per class</a>
                 @endpermission
 
 

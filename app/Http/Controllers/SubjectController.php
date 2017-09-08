@@ -209,6 +209,46 @@ class SubjectController extends Controller
 
 
     }
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Classroom  $classroom
+     * @return \Illuminate\Http\Response
+     */
+    public function showStatistics()
+    {
+      if(\Entrust::can('see-statistics')){
+        $nbOfGradesPerSubject = DB::table('grades')
+                       ->select(['subject_id', DB::raw('count(*)')])
+                       ->groupBy('subject_id')
+                       ->get();
+
+        $nbOfGradesPerSubjectArray = array_pluck($nbOfGradesPerSubject, 'count(*)', 'subject_id');
+
+        $subjects = Subject::all();
+        $subjects = array_pluck($subjects, 'name');
+
+        // $classroomId = $classroom->id;
+        // $classroom = Classroom::findOrFail($classroomId);
+        //
+        // $students = User::where("usertable_type", "=", "class")
+        //         ->where("usertable_id", "=", $classroom->id)->orderBy('name', 'asc')->get();
+        //
+        //
+        // $subjectIds = DB::table('classroom_subject')
+        //                ->select('subject_id')
+        //                ->where('classroom_id', '=', $classroom->id)
+        //                ->get();
+        // $subjectIds = array_pluck($subjectIds, 'subject_id');
+        // $subjects = Subject::find($subjectIds);
+        return view('grade.statistics', ['nbOfGradesPerSubjectArray' => $nbOfGradesPerSubjectArray, 'subjects' => $subjects]);
+
+
+
+
+      }
+
+    }
 
     /**
      * Remove the specified resource from storage.

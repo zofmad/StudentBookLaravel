@@ -28,15 +28,24 @@
                         <a href="{{ route('user.edit.role', ['role' => $role, 'user' => $user]) }}" class="btn btn-primary">Edit {{$role}}</a>
                     </p>
                     <hr>
+
                   @endforeach
+                  </div>
+                  <a href="{{ route('user.create.role', $role) }}" class="btn btn-primary">Add new {{$role}}</a>
+
+                  @permission('see-statistics')
+                    @if($role == 'Teacher')
+                      <a href="{{ route('teachers.statistics') }}" class="btn btn-info"><b>View statistics of grades per teacher</a>
+
+                    @endif
+                  @endpermission
 
 
 
 
 
 
-                </div>
-                <a href="{{ route('user.create.role', $role) }}" class="btn btn-primary">Add new {{$role}}</a>
+
 
 
             </div>
